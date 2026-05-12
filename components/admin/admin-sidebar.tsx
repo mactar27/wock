@@ -1,0 +1,83 @@
+"use client"
+
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { Package, LayoutDashboard, Settings, LogOut, Apple } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { logout } from "@/lib/actions/auth"
+import { useRouter } from "next/navigation"
+
+const navigation = [
+  { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
+  { name: "Produits", href: "/admin/products", icon: Package },
+  { name: "Paramètres", href: "/admin/settings", icon: Settings },
+]
+
+interface AdminSidebarProps {
+  user: { email: string }
+}
+
+export function AdminSidebar({ user }: AdminSidebarProps) {
+  const pathname = usePathname()
+  const router = useRouter()
+
+  const handleSignOut = async () => {
+    await logout()
+    router.push("/admin/login")
+  }
+
+  return (
+    <aside className="flex w-72 flex-col border-r border-primary/10 bg-card">
+      {/* Logo */}
+      <div className="flex h-20 items-center gap-3 border-b border-primary/10 px-6">
+        <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
+          <span className="text-xl font-black text-primary-foreground">W</span>
+        </div>
+        <span className="font-black text-xl tracking-tighter text-foreground">Wocky Admin</span>
+      </div>
+
+      {/* Navigation */}
+      <nav className="flex-1 space-y-2 px-4 py-8">
+        {navigation.map((item) => {
+          const isActive = pathname === item.href || 
+            (item.href !== "/admin" && pathname.startsWith(item.href))
+          return (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={cn(
+                "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all",
+                isActive
+                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20"
+                  : "text-muted-foreground hover:bg-primary/10 hover:text-primary"
+              )}
+            >
+              <item.icon className={cn("h-5 w-5", isActive ? "text-primary-foreground" : "text-primary")} />
+              {item.name}
+            </Link>
+          )
+        })}
+      </nav>
+
+      {/* User */}
+      <div className="border-t border-primary/10 p-6 bg-primary/5">
+        <div className="flex items-center gap-4">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-primary-foreground text-lg font-black shadow-inner">
+            {user.email?.charAt(0).toUpperCase()}
+          </div>
+          <div className="flex-1 truncate">
+            <p className="text-sm font-bold text-foreground truncate">{user.email}</p>
+            <p className="text-xs font-medium text-primary">Administrateur</p>
+          </div>
+          <button
+            onClick={handleSignOut}
+            className="p-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-all"
+            title="Se déconnecter"
+          >
+            <LogOut className="h-5 w-5" />
+          </button>
+        </div>
+      </div>
+    </aside>
+  )
+}
