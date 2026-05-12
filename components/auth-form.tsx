@@ -33,7 +33,11 @@ export function AuthForm({ mode }: AuthFormProps) {
         : await userRegister(data)
 
       if (result.success) {
-        router.push("/")
+        if (result.user?.role === 'admin') {
+          router.push("/admin")
+        } else {
+          router.push("/")
+        }
         router.refresh()
       } else {
         setError(result.error || "Une erreur est survenue")

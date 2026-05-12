@@ -15,7 +15,7 @@ import {
   DropdownMenuSeparator, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu"
-import { User, LogOut, Settings, UserCircle } from "lucide-react"
+import { User, LogOut, Settings, UserCircle, LayoutDashboard } from "lucide-react"
 
 const navigation = [
   { name: "Smartphones", href: "/smartphones" },
@@ -72,6 +72,14 @@ export function Header() {
                 <DropdownMenuContent className="w-56 mt-4 rounded-2xl bg-card/95 backdrop-blur-xl border-white/10" align="end">
                   <DropdownMenuLabel>Mon Compte</DropdownMenuLabel>
                   <DropdownMenuSeparator className="bg-white/5" />
+                  {user.role === 'admin' && (
+                    <DropdownMenuItem asChild className="focus:bg-primary/10 text-primary cursor-pointer rounded-xl font-bold">
+                      <Link href="/admin">
+                        <LayoutDashboard className="mr-2 h-4 w-4" />
+                        Dashboard Admin
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuItem className="focus:bg-white/5 cursor-pointer rounded-xl">
                     <UserCircle className="mr-2 h-4 w-4" />
                     Profil
