@@ -18,13 +18,8 @@ export function Header() {
   return (
     <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl">
       <nav className="flex items-center justify-between px-8 py-4 bg-card/60 backdrop-blur-xl border border-white/10 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center rotate-3 group-hover:rotate-0 transition-transform">
-            <span className="text-primary-foreground font-bold">W</span>
-          </div>
-          <span className="text-lg font-bold tracking-tight text-foreground">Wocky<span className="text-primary">Tech</span></span>
-        </Link>
+        {/* Espace vide à la place du logo pour l'équilibre */}
+        <div className="flex-1 md:flex-none" />
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex md:items-center md:gap-x-10">

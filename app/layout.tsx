@@ -24,23 +24,10 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
-  generator: 'v0.app',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
+    icon: '/apple-icon.png',
     apple: '/apple-icon.png',
+    shortcut: '/apple-icon.png',
   },
 }
 
