@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { SplashScreen } from '@/components/splash-screen'
 import './globals.css'
 
 const _geist = Geist({
@@ -39,6 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${_geist.variable} ${_geistMono.variable} bg-background`}>
       <body className="font-sans antialiased">
+        <SplashScreen />
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
