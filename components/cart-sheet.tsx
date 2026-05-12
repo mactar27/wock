@@ -12,8 +12,10 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { ShoppingBag, Trash2, Plus, Minus, X } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export function CartSheet() {
+  const router = useRouter()
   const { items, removeItem, updateQuantity, totalPrice, totalItems, isOpen, setIsOpen } = useCart()
 
   const formatPrice = (price: number) => {
@@ -131,7 +133,13 @@ export function CartSheet() {
                 <span className="text-primary">{formatPrice(totalPrice)}</span>
               </div>
             </div>
-            <Button className="w-full py-6 rounded-2xl text-lg font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform">
+            <Button 
+              onClick={() => {
+                setIsOpen(false)
+                router.push("/checkout")
+              }}
+              className="w-full py-6 rounded-2xl text-lg font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] transition-transform"
+            >
               Passer la commande
             </Button>
           </SheetFooter>

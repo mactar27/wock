@@ -3,14 +3,16 @@
 import { useEffect, useState } from "react"
 
 export function SplashScreen() {
+  const [mounted, setMounted] = useState(false)
   const [visible, setVisible] = useState(true)
   const [fadeOut, setFadeOut] = useState(false)
 
   useEffect(() => {
-    // Démarrer le fondu après 1.8 secondes
-    const fadeTimer = setTimeout(() => setFadeOut(true), 1800)
-    // Cacher complètement après 2.4 secondes
-    const hideTimer = setTimeout(() => setVisible(false), 2400)
+    setMounted(true)
+    // Démarrer le fondu après 1.2 secondes
+    const fadeTimer = setTimeout(() => setFadeOut(true), 1200)
+    // Cacher complètement après 1.6 secondes
+    const hideTimer = setTimeout(() => setVisible(false), 1600)
 
     return () => {
       clearTimeout(fadeTimer)
@@ -18,11 +20,17 @@ export function SplashScreen() {
     }
   }, [])
 
-  if (!visible) return null
+  if (!mounted || !visible) return null
+
+  const handleDismiss = () => {
+    setFadeOut(true)
+    setTimeout(() => setVisible(false), 400)
+  }
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black"
+      onClick={handleDismiss}
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black cursor-pointer"
       style={{
         transition: "opacity 0.6s ease-out",
         opacity: fadeOut ? 0 : 1,
@@ -61,7 +69,7 @@ export function SplashScreen() {
         <div
           className="h-full bg-white rounded-full"
           style={{
-            animation: "splashProgress 1.8s ease-out forwards",
+            animation: "splashProgress 1.2s ease-out forwards",
           }}
         />
       </div>
