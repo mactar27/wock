@@ -2,10 +2,15 @@ import mysql from 'mysql2/promise';
 
 // Configuration du pool de connexion MySQL
 const pool = mysql.createPool({
-  host: process.env.MYSQL_HOST || 'localhost',
-  user: process.env.MYSQL_USER || 'root',
-  password: process.env.MYSQL_PASSWORD || '',
-  database: process.env.MYSQL_DATABASE || 'wockytech_db',
+  host: process.env.MYSQL_HOST || 'gateway01.eu-central-1.prod.aws.tidbcloud.com',
+  port: Number(process.env.MYSQL_PORT) || 4000,
+  user: process.env.MYSQL_USER || '3RWMBVYcPuZSTxT.root',
+  password: process.env.MYSQL_PASSWORD || 'ScfP2eBWvQ49M83A',
+  database: process.env.MYSQL_DATABASE || 'edusmart',
+  ssl: {
+    minVersion: 'TLSv1.2',
+    rejectUnauthorized: true,
+  },
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
