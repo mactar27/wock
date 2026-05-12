@@ -4,6 +4,18 @@ import Link from "next/link"
 import { Menu, X, ShoppingBag, Search } from "lucide-react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import { useCart } from "@/lib/cart-context"
+import { useAuth } from "@/lib/auth-context"
+import { CartSheet } from "./cart-sheet"
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuLabel, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu"
+import { User, LogOut, Settings, UserCircle } from "lucide-react"
 
 const navigation = [
   { name: "Smartphones", href: "/smartphones" },
@@ -14,6 +26,8 @@ const navigation = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { totalItems, setIsOpen } = useCart()
+  const { user, logout } = useAuth()
 
   return (
     <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl">
@@ -43,14 +57,63 @@ export function Header() {
           >
             <Search className="h-5 w-5" />
           </button>
-          <button
-            type="button"
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full font-semibold text-sm hover:opacity-90 transition-opacity"
-            aria-label="Shopping bag"
-          >
-            <ShoppingBag className="h-4 w-4" />
-            <span>Panier</span>
-          </button>
+          
+          <div className="flex items-center gap-4">
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="flex items-center gap-2 p-1 pl-2 pr-4 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-colors">
+                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                      <User className="h-4 w-4" />
+                    </div>
+                    <span className="text-sm font-bold text-foreground max-w-[100px] truncate">{user.name}</span>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56 mt-4 rounded-2xl bg-card/95 backdrop-blur-xl border-white/10" align="end">
+                  <DropdownMenuLabel>Mon Compte</DropdownMenuLabel>
+                  <DropdownMenuSeparator className="bg-white/5" />
+                  <DropdownMenuItem className="focus:bg-white/5 cursor-pointer rounded-xl">
+                    <UserCircle className="mr-2 h-4 w-4" />
+                    Profil
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="focus:bg-white/5 cursor-pointer rounded-xl">
+                    <Settings className="mr-2 h-4 w-4" />
+                    Paramètres
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator className="bg-white/5" />
+                  <DropdownMenuItem 
+                    onClick={() => logout()}
+                    className="focus:bg-destructive/10 text-destructive cursor-pointer rounded-xl"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Déconnexion
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link
+                href="/login"
+                className="text-sm font-bold text-foreground/70 hover:text-primary transition-colors"
+              >
+                Connexion
+              </Link>
+            )}
+
+            <button
+              type="button"
+              onClick={() => setIsOpen(true)}
+              className="group relative flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full font-semibold text-sm hover:opacity-90 transition-all active:scale-95"
+              aria-label="Shopping bag"
+            >
+              <ShoppingBag className="h-4 w-4" />
+              <span>Panier</span>
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground ring-2 ring-background group-hover:scale-110 transition-transform">
+                  {totalItems}
+                </span>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Mobile menu button */}
@@ -73,6 +136,16 @@ export function Header() {
         )}
       >
         <div className="flex flex-col items-center space-y-6 px-6">
+          {user && (
+            <div className="flex flex-col items-center gap-2 mb-4">
+              <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                <User className="h-8 w-8" />
+              </div>
+              <p className="font-bold text-xl">{user.name}</p>
+              <p className="text-sm text-muted-foreground">{user.email}</p>
+            </div>
+          )}
+          
           {navigation.map((item) => (
             <Link
               key={item.name}
@@ -83,11 +156,49 @@ export function Header() {
               {item.name}
             </Link>
           ))}
-          <button className="w-full py-4 bg-primary text-primary-foreground rounded-2xl font-bold">
+          
+          {!user && (
+            <Link
+              href="/login"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full py-4 text-center border border-white/10 rounded-2xl font-bold"
+            >
+              Se connecter
+            </Link>
+          )}
+
+          <button 
+            onClick={() => {
+              setMobileMenuOpen(false)
+              setIsOpen(true)
+            }}
+            className="group relative w-full py-4 bg-primary text-primary-foreground rounded-2xl font-bold flex items-center justify-center gap-2"
+          >
+            <ShoppingBag className="h-5 w-5" />
             Mon Panier
+            {totalItems > 0 && (
+              <span className="absolute right-4 bg-white text-primary rounded-full w-6 h-6 flex items-center justify-center text-xs">
+                {totalItems}
+              </span>
+            )}
           </button>
+
+          {user && (
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false)
+                logout()
+              }}
+              className="w-full py-4 text-destructive font-bold flex items-center justify-center gap-2"
+            >
+              <LogOut className="h-5 w-5" />
+              Déconnexion
+            </button>
+          )}
         </div>
       </div>
+
+      <CartSheet />
     </header>
   )
 }

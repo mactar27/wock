@@ -53,8 +53,8 @@ export function Footer() {
           ))}
         </div>
         <div className="mt-12 border-t border-border pt-8 flex flex-col sm:flex-row justify-between gap-4">
-          <p className="text-xs text-muted-foreground">
-            2024 TechStore. Tous droits reserves.
+          <p className="text-sm text-muted-foreground">
+            2026 TechStore. Tous droits reserves.
           </p>
           <p className="text-xs text-muted-foreground">
             Realise par{" "}

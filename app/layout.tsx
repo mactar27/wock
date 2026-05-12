@@ -2,6 +2,9 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { SplashScreen } from '@/components/splash-screen'
+import { Toaster } from '@/components/ui/toaster'
+import { CartProvider } from '@/lib/cart-context'
+import { AuthProvider } from '@/lib/auth-context'
 import './globals.css'
 
 const _geist = Geist({
@@ -40,9 +43,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${_geist.variable} ${_geistMono.variable} bg-background`}>
       <body className="font-sans antialiased">
-        <SplashScreen />
-        {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        <AuthProvider>
+          <CartProvider>
+            <SplashScreen />
+            {children}
+            {process.env.NODE_ENV === 'production' && <Analytics />}
+            <Toaster />
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   )

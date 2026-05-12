@@ -33,7 +33,7 @@ export default async function HomePage() {
       
       {/* Hero Section - Featuring a top-tier Android phone for a change */}
       <HeroSection
-        subtitle="Innovation 2024"
+        subtitle="Innovation 2026"
         title="Galaxy S24 Ultra"
         description="Entrez dans l'ère de la Galaxy AI. Un design en titane, un appareil photo révolutionnaire."
         image="/samsung s24.jpeg"

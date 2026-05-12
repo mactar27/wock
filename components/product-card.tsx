@@ -1,6 +1,10 @@
+"use client"
+
 import Link from "next/link"
 import Image from "next/image"
-import { ChevronRight } from "lucide-react"
+import { ShoppingBag, ChevronRight } from "lucide-react"
+import { useCart } from "@/lib/cart-context"
+import { Button } from "./ui/button"
 import type { Product } from "@/lib/types"
 
 interface ProductCardProps {
@@ -9,6 +13,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, variant = "default" }: ProductCardProps) {
+  const { addItem } = useCart()
   const categoryPath = product.category === "laptop" ? "laptops" : product.category === "smartphone" ? "smartphones" : "accessories"
   
   const formatPrice = (price: number) => {
@@ -17,6 +22,12 @@ export function ProductCard({ product, variant = "default" }: ProductCardProps) 
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(price) + " FCFA"
+  }
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    addItem(product)
   }
 
   if (variant === "featured") {
@@ -56,7 +67,13 @@ export function ProductCard({ product, variant = "default" }: ProductCardProps) 
           </div>
           
           <div className="mt-8 flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-widest text-primary opacity-0 group-hover:opacity-100 transition-opacity">Découvrir</span>
+            <Button 
+              onClick={handleAddToCart}
+              className="relative z-20 h-12 px-6 rounded-2xl bg-primary text-primary-foreground font-bold flex items-center gap-2 transition-all hover:scale-105 active:scale-95"
+            >
+              <ShoppingBag className="h-5 w-5" />
+              Ajouter au panier
+            </Button>
             <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all">
               <ChevronRight className="h-5 w-5" />
             </div>
@@ -78,23 +95,32 @@ export function ProductCard({ product, variant = "default" }: ProductCardProps) 
           fill
           className="object-contain p-6 transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-6">
-          <span className="text-xs font-bold text-primary uppercase tracking-wider">Voir les détails</span>
+        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-between p-4">
+          <Button 
+            onClick={handleAddToCart}
+            size="icon"
+            className="h-10 w-10 rounded-full bg-primary text-primary-foreground shadow-lg transition-all hover:scale-110 active:scale-90"
+          >
+            <ShoppingBag className="h-5 w-5" />
+          </Button>
+          <span className="text-xs font-bold text-primary uppercase tracking-wider">Détails</span>
         </div>
       </div>
-      <div className="mt-4 px-2">
-        <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
-          {product.name}
-        </h3>
-        <div className="mt-1 flex items-center gap-3">
-          <span className="text-sm font-bold text-primary">
-            {formatPrice(product.price)}
-          </span>
-          {product.original_price && (
-            <span className="text-xs text-muted-foreground line-through opacity-50">
-              {formatPrice(product.original_price)}
+      <div className="mt-4 px-2 flex justify-between items-start">
+        <div>
+          <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
+            {product.name}
+          </h3>
+          <div className="mt-1 flex items-center gap-3">
+            <span className="text-sm font-bold text-primary">
+              {formatPrice(product.price)}
             </span>
-          )}
+            {product.original_price && (
+              <span className="text-xs text-muted-foreground line-through opacity-50">
+                {formatPrice(product.original_price)}
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </Link>
