@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useCart } from "@/lib/cart-context"
 import { useAuth } from "@/lib/auth-context"
 import { createOrder } from "@/lib/actions/orders"
@@ -16,11 +16,25 @@ import { ShoppingBag, CreditCard, Truck, CheckCircle2, ArrowRight, Loader2 } fro
 
 export default function CheckoutPage() {
   const { items, totalPrice, clearCart } = useCart()
-  const { user } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.push("/login?callback=/checkout")
+    }
+  }, [user, authLoading, router])
+
+  if (authLoading || (!user && !submitted)) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="h-10 w-10 text-primary animate-spin" />
+      </div>
+    )
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
