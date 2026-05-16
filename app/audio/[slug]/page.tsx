@@ -5,6 +5,10 @@ import { ProductDetail } from "@/components/product-detail"
 import { notFound } from "next/navigation"
 import type { Product } from "@/lib/types"
 
+interface PageProps {
+  params: Promise<{ slug: string }>
+}
+
 async function getProduct(slug: string): Promise<Product | null> {
   try {
     const products = await query(
@@ -19,8 +23,9 @@ async function getProduct(slug: string): Promise<Product | null> {
   }
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const product = await getProduct(params.slug)
+export async function generateMetadata({ params }: PageProps) {
+  const { slug } = await params
+  const product = await getProduct(slug)
   if (!product) return { title: "Produit non trouvé" }
   
   return {
@@ -29,8 +34,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default async function AudioProductPage({ params }: { params: { slug: string } }) {
-  const product = await getProduct(params.slug)
+export default async function AudioProductPage({ params }: PageProps) {
+  const { slug } = await params
+  const product = await getProduct(slug)
   
   if (!product) {
     notFound()
