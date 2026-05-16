@@ -40,8 +40,8 @@ export function ProductDetail({ product }: ProductDetailProps) {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-6 relative">
-      <div className="absolute top-10 left-6 z-20">
+    <div className="mx-auto max-w-7xl px-6 pt-40">
+      <div className="mb-12">
         <button 
           onClick={() => router.back()}
           className="group flex items-center gap-2 px-5 py-2.5 rounded-full bg-card/80 border border-white/10 backdrop-blur-xl text-sm font-black text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300 shadow-2xl"
@@ -51,7 +51,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 pt-32">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
         {/* Product Image */}
         <div className="relative aspect-square rounded-[2.5rem] overflow-hidden bg-white/5 border border-white/5 shadow-2xl group">
           <Image
