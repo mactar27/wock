@@ -37,7 +37,7 @@ export default async function HomePage() {
         title="Galaxy S24 Ultra"
         description="Entrez dans l'ère de la Galaxy AI. Un design en titane, un appareil photo révolutionnaire."
         image="/samsung s24.jpeg"
-        primaryLink={{ text: "Acheter maintenant", href: "/smartphones/samsung-galaxy-s24-ultra" }}
+        primaryLink={{ text: "Acheter maintenant", href: "/smartphones" }}
         secondaryLink={{ text: "En savoir plus", href: "/smartphones" }}
       />
 
