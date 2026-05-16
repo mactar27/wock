@@ -22,7 +22,9 @@ export async function uploadImage(formData: FormData) {
       .toLowerCase();
     
     const filename = `${Date.now()}${baseName}${extension}`;
-    const uploadPath = path.join(process.cwd(), "public", "uploads", filename);
+    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    await fs.mkdir(uploadDir, { recursive: true });
+    const uploadPath = path.join(uploadDir, filename);
 
     await fs.writeFile(uploadPath, buffer);
     
