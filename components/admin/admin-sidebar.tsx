@@ -15,11 +15,15 @@ const navigation = [
 
 interface AdminSidebarProps {
   user: { email: string }
+  onAction?: () => void
 }
 
-export function AdminSidebar({ user }: AdminSidebarProps) {
+export function AdminSidebar({ user, onAction }: AdminSidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
+  const handleClick = () => {
+    if (onAction) onAction()
+  }
 
   const handleSignOut = async () => {
     await logout()
@@ -45,6 +49,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
         {/* Retour au site public */}
         <Link
           href="/"
+          onClick={handleClick}
           className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-accent hover:bg-accent/10 transition-all mb-6 border border-accent/20 bg-accent/5"
         >
           <Home className="h-5 w-5" />
@@ -61,6 +66,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
             <Link
               key={item.name}
               href={item.href}
+              onClick={handleClick}
               className={cn(
                 "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold transition-all",
                 isActive
