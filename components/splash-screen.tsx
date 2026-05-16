@@ -1,106 +1,102 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import Image from "next/image"
+import { useState, useEffect } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 
 export function SplashScreen() {
-  const [mounted, setMounted] = useState(false)
-  const [visible, setVisible] = useState(false)
-  const [fadeOut, setFadeOut] = useState(false)
+  const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
-    setMounted(true)
-    
-    // Vérifier si le splash a déjà été affiché dans cette session
-    const hasSeenSplash = sessionStorage.getItem('hasSeenSplash')
-    
-    if (!hasSeenSplash) {
-      setVisible(true)
-      // Démarrer le fondu après 1.2 secondes
-      const fadeTimer = setTimeout(() => setFadeOut(true), 1200)
-      // Cacher complètement après 1.6 secondes
-      const hideTimer = setTimeout(() => {
-        setVisible(false)
-        sessionStorage.setItem('hasSeenSplash', 'true')
-      }, 1600)
-
-      return () => {
-        clearTimeout(fadeTimer)
-        clearTimeout(hideTimer)
-      }
+    // Check if splash has already been shown in this session
+    const splashShown = sessionStorage.getItem("revotex_splash_shown")
+    if (splashShown) {
+      setIsVisible(false)
+      return
     }
+
+    const timer = setTimeout(() => {
+      setIsVisible(false)
+      sessionStorage.setItem("revotex_splash_shown", "true")
+    }, 2500)
+
+    return () => clearTimeout(timer)
   }, [])
 
-  if (!mounted || !visible) return null
-
-  const handleDismiss = () => {
-    setFadeOut(true)
-    setTimeout(() => {
-      setVisible(false)
-      sessionStorage.setItem('hasSeenSplash', 'true')
-    }, 400)
-  }
-
   return (
-    <div
-      onClick={handleDismiss}
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white cursor-pointer"
-      style={{
-        transition: "opacity 0.6s ease-out",
-        opacity: fadeOut ? 0 : 1,
-      }}
-    >
-      {/* Logo animé */}
-      <div
-        style={{
-          animation: "splashPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
-        }}
-        className="flex flex-col items-center gap-6"
-      >
-        {/* Logo Apple Icon */}
-        <div className="w-24 h-24 flex items-center justify-center">
-          <Image 
-            src="/apple-icon.png" 
-            alt="Logo" 
-            width={96} 
-            height={96} 
-            className="object-contain"
-            priority
-          />
-        </div>
-
-        {/* Nom de la marque */}
-        <div className="text-center">
-          <p className="text-3xl font-black tracking-tight">
-            <span className="text-primary">Revo</span><span className="text-accent">tex</span>
-          </p>
-          <p className="text-black/30 text-sm mt-1 tracking-widest uppercase">
-            Premium Store
-          </p>
-        </div>
-      </div>
-
-      {/* Barre de chargement */}
-      <div className="absolute bottom-16 w-32 h-0.5 bg-black/5 rounded-full overflow-hidden">
-        <div
-          className="h-full bg-primary rounded-full"
-          style={{
-            animation: "splashProgress 1.2s ease-out forwards",
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 1 }}
+          exit={{ 
+            opacity: 0,
+            scale: 1.1,
+            filter: "blur(20px)",
+            transition: { duration: 0.8, ease: "circIn" }
           }}
-        />
-      </div>
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white"
+        >
+          {/* Logo container with pulse animation */}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ 
+              scale: [0.8, 1.1, 1],
+              opacity: 1,
+            }}
+            transition={{ 
+              duration: 1.2,
+              ease: "easeOut",
+              times: [0, 0.6, 1]
+            }}
+            className="relative"
+          >
+            <div className="w-40 h-40 bg-white rounded-[2.5rem] flex items-center justify-center shadow-2xl border border-primary/5">
+              <img 
+                src="/apple-icon.png" 
+                alt="Revotex Logo" 
+                className="w-28 h-28 object-contain"
+              />
+            </div>
+            
+            {/* Subtle glow effect around the logo */}
+            <motion.div 
+              animate={{ 
+                scale: [1, 1.2, 1],
+                opacity: [0.2, 0.5, 0.2]
+              }}
+              transition={{ 
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute inset-0 bg-primary/20 blur-3xl rounded-full -z-10"
+            />
+          </motion.div>
 
-      {/* Animations CSS */}
-      <style>{`
-        @keyframes splashPop {
-          0% { opacity: 0; transform: scale(0.7); }
-          100% { opacity: 1; transform: scale(1); }
-        }
-        @keyframes splashProgress {
-          0% { width: 0%; }
-          100% { width: 100%; }
-        }
-      `}</style>
-    </div>
+          {/* Minimal loading indicator */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 0.8 }}
+            className="absolute bottom-20 flex flex-col items-center gap-4"
+          >
+            <div className="w-12 h-1 bg-primary/10 rounded-full overflow-hidden">
+              <motion.div 
+                initial={{ x: "-100%" }}
+                animate={{ x: "100%" }}
+                transition={{ 
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="w-full h-full bg-primary"
+              />
+            </div>
+            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/40">
+              Premium Tech Experience
+            </p>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }
