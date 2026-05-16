@@ -14,10 +14,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product, variant = "default" }: ProductCardProps) {
   const { addItem } = useCart()
-  const categoryPath = 
-    product.category === "laptop" ? "laptops" : 
-    product.category === "smartphone" ? "smartphones" : 
-    "accessories"
+  const productUrl = `/categorie/${product.category}/${product.slug}`
   
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("fr-SN", {
@@ -36,7 +33,7 @@ export function ProductCard({ product, variant = "default" }: ProductCardProps) 
   if (variant === "featured") {
     return (
       <Link
-        href={`/${categoryPath}/${product.slug}`}
+        href={productUrl}
         className="group relative block bg-card/40 border border-white/5 rounded-[2rem] p-8 transition-all duration-500 hover:bg-card/60 hover:border-primary/50 overflow-hidden"
       >
         {/* Glow effect on hover */}
@@ -88,7 +85,7 @@ export function ProductCard({ product, variant = "default" }: ProductCardProps) 
 
   return (
     <Link
-      href={`/${categoryPath}/${product.slug}`}
+      href={productUrl}
       className="group block relative"
     >
       <div className="relative aspect-square overflow-hidden rounded-3xl bg-card border border-white/5 p-6 transition-all duration-500 group-hover:border-primary/30 group-hover:-translate-y-2">

@@ -215,10 +215,14 @@ export function ProductForm({ product }: ProductFormProps) {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="smartphone">Smartphones</SelectItem>
-                  <SelectItem value="laptop">Ordinateurs</SelectItem>
-                  <SelectItem value="audio">Audio & Son</SelectItem>
-                  <SelectItem value="accessory">Accessoires</SelectItem>
+                  <SelectItem value="telephone">Téléphone</SelectItem>
+                  <SelectItem value="ordinateur">Ordinateur</SelectItem>
+                  <SelectItem value="tablette">Tablette</SelectItem>
+                  <SelectItem value="drone">Drone</SelectItem>
+                  <SelectItem value="camera">Appareil Photo</SelectItem>
+                  <SelectItem value="accessoire-telephone">Accessoires Téléphone</SelectItem>
+                  <SelectItem value="accessoire-tablette">Accessoires Tablette</SelectItem>
+                  <SelectItem value="accessoire-ordinateur">Accessoires Ordinateur</SelectItem>
                 </SelectContent>
               </Select>
             </div>

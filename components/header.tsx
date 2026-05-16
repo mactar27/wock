@@ -15,12 +15,20 @@ import {
   DropdownMenuSeparator, 
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu"
-import { User, LogOut, LayoutDashboard } from "lucide-react"
+import { User, LogOut, LayoutDashboard, ChevronDown } from "lucide-react"
 
 const navigation = [
-  { name: "Smartphones", href: "/smartphones" },
-  { name: "Ordinateurs", href: "/laptops" },
-  { name: "Accessoires", href: "/accessories" },
+  { name: "Téléphones", href: "/categorie/telephone" },
+  { name: "Ordinateurs", href: "/categorie/ordinateur" },
+  { name: "Tablettes", href: "/categorie/tablette" },
+  { name: "Drones", href: "/categorie/drone" },
+  { name: "Appareils Photo", href: "/categorie/camera" },
+]
+
+const accessoriesNav = [
+  { name: "Accessoires Téléphone", href: "/categorie/accessoire-telephone" },
+  { name: "Accessoires Tablette", href: "/categorie/accessoire-tablette" },
+  { name: "Accessoires Ordinateur", href: "/categorie/accessoire-ordinateur" },
 ]
 
 export function Header() {
@@ -42,16 +50,31 @@ export function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex md:items-center md:gap-x-10">
+        <div className="hidden md:flex md:items-center md:gap-x-8">
           {navigation.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="text-sm font-bold text-primary/80 transition-all hover:text-accent hover:scale-105"
+              className="text-sm font-bold text-primary/80 transition-all hover:text-accent hover:scale-105 whitespace-nowrap"
             >
               {item.name}
             </Link>
           ))}
+          {/* Accessories Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-1 text-sm font-bold text-primary/80 transition-all hover:text-accent">
+                Accessoires <ChevronDown className="h-4 w-4" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="mt-4 rounded-2xl bg-card/95 backdrop-blur-xl border-white/10 min-w-[220px]" align="start">
+              {accessoriesNav.map((item) => (
+                <DropdownMenuItem key={item.name} asChild className="focus:bg-primary/10 cursor-pointer rounded-xl">
+                  <Link href={item.href} className="font-bold">{item.name}</Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {/* Desktop Actions */}
@@ -168,7 +191,19 @@ export function Header() {
             <Link
               key={item.name}
               href={item.href}
-              className="text-xl font-bold text-primary hover:text-accent transition-colors"
+              className="text-lg font-bold text-primary hover:text-accent transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {item.name}
+            </Link>
+          ))}
+          <div className="w-full h-px bg-white/10" />
+          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Accessoires</p>
+          {accessoriesNav.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="text-base font-bold text-primary/70 hover:text-accent transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               {item.name}

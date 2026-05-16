@@ -34,11 +34,10 @@ export function AuthForm({ mode }: AuthFormProps) {
 
       if (result.success) {
         if (result.user?.role === 'admin') {
-          router.push("/admin")
+          window.location.href = "/admin"
         } else {
-          router.push("/")
+          window.location.href = "/"
         }
-        router.refresh()
       } else {
         setError(result.error || "Une erreur est survenue")
       }
