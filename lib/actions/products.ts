@@ -15,22 +15,14 @@ export async function uploadImage(formData: FormData) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Nettoyer le nom du fichier : garder uniquement lettres et chiffres
-    const extension = path.extname(file.name);
-    const baseName = path.basename(file.name, extension)
-      .replace(/[^a-zA-Z0-9]/g, "") // Supprime tout ce qui n'est pas lettre ou chiffre
-      .toLowerCase();
-    
-    const filename = `${Date.now()}${baseName}${extension}`;
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    await fs.mkdir(uploadDir, { recursive: true });
-    const uploadPath = path.join(uploadDir, filename);
+    // Convertir l'image en base64 pour la stocker directement dans la base de données
+    // car Vercel a un système de fichiers en lecture seule en production
+    const mimeType = file.type || "image/jpeg";
+    const base64Image = `data:${mimeType};base64,${buffer.toString("base64")}`;
 
-    await fs.writeFile(uploadPath, buffer);
-    
     return { 
       success: true, 
-      url: `/uploads/${filename}` 
+      url: base64Image 
     };
   } catch (error) {
     console.error("Upload error:", error);
