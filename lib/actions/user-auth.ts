@@ -8,14 +8,14 @@ export async function userRegister(data: any) {
 
   try {
     // Vérifier si l'email existe déjà
-    const existing = await query("SELECT id FROM User WHERE email = ?", [email]) as any[];
+    const existing = await query("SELECT id FROM revotex_users WHERE email = ?", [email]) as any[];
     if (existing.length > 0) {
       return { success: false, error: "Cet email est déjà utilisé" };
     }
 
     // Insérer le nouvel utilisateur
     const result = await query(
-      "INSERT INTO User (name, email, password) VALUES (?, ?, ?)",
+      "INSERT INTO revotex_users (name, email, password) VALUES (?, ?, ?)",
       [name, email, password]
     ) as any;
 
@@ -42,7 +42,7 @@ export async function userLogin(data: any) {
   try {
     // 1. Chercher dans la table des utilisateurs standards
     let users = await query(
-      "SELECT * FROM User WHERE email = ? AND password = ?",
+      "SELECT * FROM revotex_users WHERE email = ? AND password = ?",
       [email, password]
     ) as any[];
 
@@ -102,7 +102,7 @@ export async function getCurrentUser() {
         return { ...admins[0], name: "Admin Revotex", role: 'admin' };
       }
     } else {
-      const users = await query("SELECT id, name, email FROM User WHERE id = ?", [sessionId]) as any[];
+      const users = await query("SELECT id, name, email FROM revotex_users WHERE id = ?", [sessionId]) as any[];
       if (users.length > 0) {
         return { ...users[0], role: 'user' };
       }
