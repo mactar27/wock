@@ -39,7 +39,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="mt-6 text-sm text-primary-foreground/60 max-w-xs leading-relaxed">
-              Decouvrez les derniers produits Apple avec notre selection premium de Mac, iPhone et accessoires.
+              Revotex Technologie : L'excellence de l'innovation au Sénégal. Découvrez notre sélection premium de smartphones, ordinateurs et accessoires de pointe pour sublimer votre quotidien.
             </p>
             <div className="mt-8 space-y-4">
               <div className="flex items-center gap-3 text-sm text-primary-foreground/70">
