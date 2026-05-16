@@ -55,25 +55,52 @@ export function Header() {
           ))}
         </div>
 
-        {/* Desktop Actions */}
-        <div className="hidden md:flex md:items-center md:gap-x-6">
+        {/* Mobile Navigation (Scrollable) */}
+        <div className="flex md:hidden items-center gap-4 overflow-x-auto no-scrollbar max-w-[50%] px-2">
+          {navigation.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="text-[10px] font-black uppercase tracking-tighter text-primary/90 whitespace-nowrap"
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center gap-2 md:gap-6">
           <button
             type="button"
-            className="p-2 text-foreground/70 hover:text-primary transition-colors bg-white/5 rounded-full"
+            className="p-1.5 md:p-2 text-foreground/70 hover:text-primary transition-colors bg-white/5 rounded-full"
             aria-label="Search"
           >
-            <Search className="h-5 w-5" />
+            <Search className="h-4 w-4 md:h-5 w-5" />
           </button>
           
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
+            <button
+              type="button"
+              onClick={() => setIsOpen(true)}
+              className="group relative flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-primary text-primary-foreground rounded-full font-bold text-[10px] md:text-sm hover:opacity-90 transition-all active:scale-95"
+              aria-label="Shopping bag"
+            >
+              <ShoppingBag className="h-3.5 w-3.5 md:h-4 w-4" />
+              <span className="hidden sm:inline">Panier</span>
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[8px] font-bold text-destructive-foreground ring-1 ring-background">
+                  {totalItems}
+                </span>
+              )}
+            </button>
+
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-2 p-1 pl-2 pr-4 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-colors">
-                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-                      <User className="h-4 w-4" />
+                  <button className="flex items-center gap-2 p-1 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-colors">
+                    <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
+                      <User className="h-3.5 w-3.5 md:h-4 w-4" />
                     </div>
-                    <span className="text-sm font-bold text-foreground max-w-[100px] truncate">{user.name}</span>
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56 mt-4 rounded-2xl bg-card/95 backdrop-blur-xl border-white/10" align="end">
@@ -87,15 +114,6 @@ export function Header() {
                       </Link>
                     </DropdownMenuItem>
                   )}
-                  <DropdownMenuItem className="focus:bg-white/5 cursor-pointer rounded-xl">
-                    <UserCircle className="mr-2 h-4 w-4" />
-                    Profil
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-white/5 cursor-pointer rounded-xl">
-                    <Settings className="mr-2 h-4 w-4" />
-                    Paramètres
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator className="bg-white/5" />
                   <DropdownMenuItem 
                     onClick={() => logout()}
                     className="focus:bg-destructive/10 text-destructive cursor-pointer rounded-xl"
@@ -108,110 +126,14 @@ export function Header() {
             ) : (
               <Link
                 href="/login"
-                className="text-sm font-bold text-foreground/70 hover:text-primary transition-colors"
+                className="text-[10px] md:text-sm font-bold text-foreground/70 hover:text-primary transition-colors"
               >
                 Connexion
               </Link>
             )}
-
-            <button
-              type="button"
-              onClick={() => setIsOpen(true)}
-              className="group relative flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full font-semibold text-sm hover:opacity-90 transition-all active:scale-95"
-              aria-label="Shopping bag"
-            >
-              <ShoppingBag className="h-4 w-4" />
-              <span>Panier</span>
-              {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground ring-2 ring-background group-hover:scale-110 transition-transform">
-                  {totalItems}
-                </span>
-              )}
-            </button>
           </div>
         </div>
-
-        {/* Mobile menu button */}
-        <div className="flex md:hidden">
-          <button
-            type="button"
-            className="p-2 text-foreground bg-white/5 rounded-full"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile menu */}
-      <div
-        className={cn(
-          "md:hidden absolute top-20 left-0 right-0 transition-all duration-500 ease-in-out overflow-hidden bg-card/95 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl",
-          mobileMenuOpen ? "max-h-[80vh] opacity-100 py-8" : "max-h-0 opacity-0"
-        )}
-      >
-        <div className="flex flex-col items-center space-y-6 px-6">
-          {user && (
-            <div className="flex flex-col items-center gap-2 mb-4">
-              <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-                <User className="h-8 w-8" />
-              </div>
-              <p className="font-bold text-xl">{user.name}</p>
-              <p className="text-sm text-muted-foreground">{user.email}</p>
-            </div>
-          )}
-          
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="text-xl font-bold text-primary hover:text-accent"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {item.name}
-            </Link>
-          ))}
-          
-          {!user && (
-            <Link
-              href="/login"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full py-4 text-center border border-white/10 rounded-2xl font-bold"
-            >
-              Se connecter
-            </Link>
-          )}
-
-          <button 
-            onClick={() => {
-              setMobileMenuOpen(false)
-              setIsOpen(true)
-            }}
-            className="group relative w-full py-4 bg-primary text-primary-foreground rounded-2xl font-bold flex items-center justify-center gap-2"
-          >
-            <ShoppingBag className="h-5 w-5" />
-            Mon Panier
-            {totalItems > 0 && (
-              <span className="absolute right-4 bg-white text-primary rounded-full w-6 h-6 flex items-center justify-center text-xs">
-                {totalItems}
-              </span>
-            )}
-          </button>
-
-          {user && (
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false)
-                logout()
-              }}
-              className="w-full py-4 text-destructive font-bold flex items-center justify-center gap-2"
-            >
-              <LogOut className="h-5 w-5" />
-              Déconnexion
-            </button>
-          )}
-        </div>
-      </div>
+      </nav>v>
 
       <CartSheet />
     </header>
