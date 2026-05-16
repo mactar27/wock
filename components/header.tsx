@@ -18,11 +18,14 @@ import {
 import { User, LogOut, LayoutDashboard, ChevronDown } from "lucide-react"
 
 const navigation = [
+  { name: "Drones", href: "/categorie/drone" },
+  { name: "Appareils Photo", href: "/categorie/camera" },
+]
+
+const productsNav = [
   { name: "Téléphones", href: "/categorie/telephone" },
   { name: "Ordinateurs", href: "/categorie/ordinateur" },
   { name: "Tablettes", href: "/categorie/tablette" },
-  { name: "Drones", href: "/categorie/drone" },
-  { name: "Appareils Photo", href: "/categorie/camera" },
 ]
 
 const accessoriesNav = [
@@ -51,6 +54,22 @@ export function Header() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex md:items-center md:gap-x-8">
+          {/* Products Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-1 text-sm font-bold text-primary/80 transition-all hover:text-accent">
+                Produits <ChevronDown className="h-4 w-4" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="mt-4 rounded-2xl bg-card/95 backdrop-blur-xl border-white/10 min-w-[200px]" align="start">
+              {productsNav.map((item) => (
+                <DropdownMenuItem key={item.name} asChild className="focus:bg-primary/10 cursor-pointer rounded-xl">
+                  <Link href={item.href} className="font-bold">{item.name}</Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           {navigation.map((item) => (
             <Link
               key={item.name}
@@ -187,6 +206,18 @@ export function Header() {
             </div>
           )}
 
+          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Nos Produits</p>
+          {productsNav.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="text-lg font-bold text-primary hover:text-accent transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {item.name}
+            </Link>
+          ))}
+          <div className="w-full h-px bg-white/10" />
           {navigation.map((item) => (
             <Link
               key={item.name}
