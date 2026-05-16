@@ -42,7 +42,14 @@ export function ProductCard({ product, variant = "default" }: ProductCardProps) 
         <div className="relative z-10">
           <div className="flex justify-between items-start">
             <div>
-              <h3 className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">{product.name}</h3>
+              <div className="flex items-center gap-2">
+                <h3 className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors">{product.name}</h3>
+                {product.original_price && product.original_price > product.price && (
+                  <span className="px-2 py-1 text-[10px] font-black uppercase tracking-widest bg-destructive text-destructive-foreground rounded-full animate-pulse">
+                    Promo
+                  </span>
+                )}
+              </div>
               <p className="mt-2 text-sm text-muted-foreground line-clamp-2 max-w-[200px]">
                 {product.description}
               </p>
@@ -89,6 +96,13 @@ export function ProductCard({ product, variant = "default" }: ProductCardProps) 
       className="group block relative"
     >
       <div className="relative aspect-square overflow-hidden rounded-3xl bg-card border border-white/5 p-6 transition-all duration-500 group-hover:border-primary/30 group-hover:-translate-y-2">
+        {product.original_price && product.original_price > product.price && (
+          <div className="absolute top-4 left-4 z-10">
+            <span className="px-3 py-1.5 text-[10px] font-black uppercase tracking-widest bg-destructive text-destructive-foreground rounded-full shadow-lg shadow-destructive/20 animate-pulse">
+              Promo
+            </span>
+          </div>
+        )}
         <Image
           src={product.image_url || "/placeholder.svg?height=400&width=400"}
           alt={product.name}
