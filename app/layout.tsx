@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { SplashScreen } from '@/components/splash-screen'
-import { Toaster } from '@/components/ui/toaster'
+import { Toaster as ToasterUI } from '@/components/ui/toaster'
+import { Toaster } from '@/components/ui/sonner'
 import { CartProvider } from '@/lib/cart-context'
 import { AuthProvider } from '@/lib/auth-context'
 import './globals.css'
@@ -48,7 +49,8 @@ export default function RootLayout({
             <SplashScreen />
             {children}
             {process.env.NODE_ENV === 'production' && <Analytics />}
-            <Toaster />
+            <ToasterUI />
+            <Toaster position="top-right" richColors />
           </CartProvider>
         </AuthProvider>
       </body>

@@ -1,6 +1,7 @@
 "use client"
 
 import { AdminSidebar } from "@/components/admin/admin-sidebar"
+import { AdminNotifications } from "@/components/admin/admin-notifications"
 import { useState } from "react"
 import { Menu, X } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -46,10 +47,16 @@ export default function AdminDashboardLayout({
           <span className="font-black text-lg tracking-tighter">
             <span className="text-primary">Revo</span><span className="text-accent">tex</span> <span className="text-foreground/40 font-bold text-sm">Admin</span>
           </span>
-          <div className="w-8" /> {/* Spacer */}
+          <AdminNotifications />
         </header>
 
-        <main className="flex-1 p-4 md:p-8 overflow-y-auto">{children}</main>
+        <main className="flex-1 p-4 md:p-8 overflow-y-auto">
+          {/* Desktop Notifications Header (Hidden on Mobile) */}
+          <div className="hidden lg:flex justify-end mb-6">
+            <AdminNotifications />
+          </div>
+          {children}
+        </main>
       </div>
     </div>
   )

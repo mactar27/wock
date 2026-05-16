@@ -159,3 +159,25 @@ export async function updateOrderStatus(orderId: number, status: string) {
     return { success: false };
   }
 }
+
+export async function getPendingOrdersCount() {
+  try {
+    const result = await query(
+      "SELECT COUNT(*) as count FROM orders WHERE status = 'pending'"
+    ) as any[];
+    return result[0]?.count || 0;
+  } catch (error) {
+    return 0;
+  }
+}
+
+export async function getLatestOrderId() {
+  try {
+    const result = await query(
+      "SELECT id FROM orders ORDER BY created_at DESC LIMIT 1"
+    ) as any[];
+    return result[0]?.id || null;
+  } catch (error) {
+    return null;
+  }
+}
