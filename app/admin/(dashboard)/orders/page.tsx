@@ -14,16 +14,19 @@ import {
   TableRow 
 } from "@/components/ui/table"
 import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu"
-import { ShoppingBag, MoreVertical, Eye, Truck, CheckCircle2, Clock, XCircle } from "lucide-react"
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogHeader, 
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { ShoppingBag, MoreVertical, Eye, Truck, CheckCircle2, Clock, XCircle, MapPin, Phone, Mail, User } from "lucide-react"
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [selectedOrder, setSelectedOrder] = useState<any>(null)
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false)
 
   const fetchOrders = async () => {
     const data = await getOrders()
@@ -131,7 +134,13 @@ export default function AdminOrdersPage() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-56 rounded-2xl bg-card/95 backdrop-blur-xl border-white/10">
-                          <DropdownMenuItem className="cursor-pointer rounded-xl">
+                          <DropdownMenuItem 
+                            onClick={() => {
+                              setSelectedOrder(order)
+                              setIsDetailsOpen(true)
+                            }} 
+                            className="cursor-pointer rounded-xl"
+                          >
                             <Eye className="mr-2 h-4 w-4" /> Voir détails
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleStatusUpdate(order.id, "processing")} className="cursor-pointer rounded-xl">
@@ -156,6 +165,124 @@ export default function AdminOrdersPage() {
           </Table>
         </CardContent>
       </Card>
+
+      {/* Order Details Modal */}
+      <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+        <DialogContent className="max-w-2xl bg-card/95 backdrop-blur-xl border-white/10 rounded-3xl">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-black">Détails de la Commande</DialogTitle>
+            <DialogDescription>
+              Commande #{selectedOrder?.id} — {selectedOrder && new Date(selectedOrder.created_at).toLocaleString("fr-FR")}
+            </DialogDescription>
+          </DialogHeader>
+
+          {selectedOrder && (
+            <div className="space-y-6 mt-4">
+              {/* Client Info */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-3">
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                    <User className="h-3 w-3" /> Informations Client
+                  </h3>
+                  <div>
+                    <p className="font-bold">{selectedOrder.customer_name}</p>
+                    <p className="text-sm text-muted-foreground flex items-center gap-1">
+                      <Mail className="h-3 w-3" /> {selectedOrder.customer_email}
+                    </p>
+                    <p className="text-sm text-muted-foreground flex items-center gap-1">
+                      <Phone className="h-3 w-3" /> {selectedOrder.customer_phone}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-3">
+                  <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                    <MapPin className="h-3 w-3" /> Adresse de Livraison
+                  </h3>
+                  <p className="text-sm font-medium leading-relaxed italic">
+                    {selectedOrder.shipping_address}
+                  </p>
+                </div>
+              </div>
+
+              {/* Items Table */}
+              <div className="rounded-2xl border border-white/10 overflow-hidden">
+                <Table>
+                  <TableHeader className="bg-white/5">
+                    <TableRow className="border-white/5 hover:bg-transparent">
+                      <TableHead className="text-xs font-bold">Produit</TableHead>
+                      <TableHead className="text-xs font-bold text-center">Qté</TableHead>
+                      <TableHead className="text-xs font-bold text-right">Prix</TableHead>
+                      <TableHead className="text-xs font-bold text-right">Total</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {(() => {
+                      const items = typeof selectedOrder.items === 'string' 
+                        ? JSON.parse(selectedOrder.items) 
+                        : selectedOrder.items;
+                      
+                      return items.map((item: any, idx: number) => (
+                        <TableRow key={idx} className="border-white/5 hover:bg-transparent">
+                          <TableCell className="font-medium text-sm">{item.name}</TableCell>
+                          <TableCell className="text-center text-sm">{item.quantity}</TableCell>
+                          <TableCell className="text-right text-sm">{formatPrice(item.price)}</TableCell>
+                          <TableCell className="text-right font-bold text-sm text-primary">
+                            {formatPrice(item.price * item.quantity)}
+                          </TableCell>
+                        </TableRow>
+                      ));
+                    })()}
+                  </TableBody>
+                </Table>
+              </div>
+
+              {/* Summary */}
+              <div className="flex justify-between items-center p-6 bg-primary/5 rounded-2xl border border-primary/10">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Statut actuel</p>
+                  <div className="mt-1">{getStatusBadge(selectedOrder.status)}</div>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Montant Total</p>
+                  <p className="text-3xl font-black text-primary">{formatPrice(selectedOrder.total_amount)}</p>
+                </div>
+              </div>
+              
+              <div className="flex gap-2">
+                 <Button 
+                    variant="outline" 
+                    className="flex-1 rounded-xl"
+                    onClick={() => setIsDetailsOpen(false)}
+                 >
+                    Fermer
+                 </Button>
+                 <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                       <Button className="flex-1 rounded-xl bg-primary hover:opacity-90">
+                          Changer le Statut
+                       </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56 rounded-2xl bg-card/95 backdrop-blur-xl border-white/10">
+                        <DropdownMenuItem onClick={() => { handleStatusUpdate(selectedOrder.id, "processing"); setIsDetailsOpen(false); }} className="cursor-pointer rounded-xl">
+                            <Clock className="mr-2 h-4 w-4 text-blue-500" /> En cours
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => { handleStatusUpdate(selectedOrder.id, "shipped"); setIsDetailsOpen(false); }} className="cursor-pointer rounded-xl">
+                            <Truck className="mr-2 h-4 w-4 text-purple-500" /> Expédiée
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => { handleStatusUpdate(selectedOrder.id, "delivered"); setIsDetailsOpen(false); }} className="cursor-pointer rounded-xl">
+                            <CheckCircle2 className="mr-2 h-4 w-4 text-emerald-500" /> Livrée
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => { handleStatusUpdate(selectedOrder.id, "cancelled"); setIsDetailsOpen(false); }} className="cursor-pointer rounded-xl text-destructive">
+                            <XCircle className="mr-2 h-4 w-4" /> Annuler
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                 </DropdownMenu>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
