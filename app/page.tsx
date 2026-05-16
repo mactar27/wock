@@ -23,6 +23,16 @@ async function getFeaturedProducts(): Promise<Product[]> {
 export default async function HomePage() {
   const featuredProducts = await getFeaturedProducts()
   
+  // Get the very first featured product for the Hero section
+  const heroProduct = featuredProducts[0] || {
+    name: "Revotex Premium Tech",
+    slug: "",
+    description: "Découvrez notre sélection exclusive des meilleurs produits Apple et Tech au Sénégal.",
+    price: 0,
+    category: "smartphone",
+    image_url: "/samsung s24.jpeg"
+  }
+  
   const smartphones = featuredProducts.filter((p) => p.category === "smartphone")
   const laptops = featuredProducts.filter((p) => p.category === "laptop")
   const audio = featuredProducts.filter((p) => p.category === "audio")
@@ -31,14 +41,17 @@ export default async function HomePage() {
     <div className="min-h-screen bg-background text-foreground">
       <Header />
       
-      {/* Hero Section */}
+      {/* Dynamic Hero Section */}
       <HeroSection
         subtitle="Innovation 2026"
-        title="Galaxy S24 Ultra"
-        description="Entrez dans l'ère de la Galaxy AI. Un design en titane, un appareil photo révolutionnaire."
-        image="/samsung s24.jpeg"
-        primaryLink={{ text: "Acheter maintenant", href: "/smartphones/samsung-galaxy-s24-ultra" }}
-        secondaryLink={{ text: "En savoir plus", href: "/smartphones" }}
+        title={heroProduct.name}
+        description={heroProduct.description}
+        image={heroProduct.image_url || "/samsung s24.jpeg"}
+        primaryLink={{ 
+          text: "Acheter maintenant", 
+          href: heroProduct.slug ? `/${heroProduct.category}s/${heroProduct.slug}` : "/smartphones" 
+        }}
+        secondaryLink={{ text: "En savoir plus", href: `/${heroProduct.category}s` }}
       />
 
       {/* Categories Sections */}
