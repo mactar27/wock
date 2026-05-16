@@ -85,10 +85,18 @@ export function ProductForm({ product }: ProductFormProps) {
   }
 
 
+  const defaultSpecs = [
+    { key: "Processeur", value: "" },
+    { key: "RAM", value: "" },
+    { key: "Stockage", value: "" },
+    { key: "Carte Graphique", value: "" },
+    { key: "Écran", value: "" },
+  ]
+
   const [specs, setSpecs] = useState<{ key: string; value: string }[]>(
-    product?.specs 
+    product?.specs && Object.keys(product.specs).length > 0
       ? Object.entries(product.specs).map(([key, value]) => ({ key, value: String(value) }))
-      : []
+      : defaultSpecs
   )
 
   const addSpec = () => setSpecs([...specs, { key: "", value: "" }])

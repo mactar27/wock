@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { useCart } from "@/lib/cart-context"
 import { useAuth } from "@/lib/auth-context"
 import { CartSheet } from "./cart-sheet"
+import { SearchModal } from "./search-modal"
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -36,6 +37,7 @@ const accessoriesNav = [
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const { totalItems, setIsOpen } = useCart()
   const { user, logout } = useAuth()
 
@@ -100,6 +102,7 @@ export function Header() {
         <div className="hidden md:flex md:items-center md:gap-x-6">
           <button
             type="button"
+            onClick={() => setSearchOpen(true)}
             className="p-2 text-foreground/70 hover:text-primary transition-colors bg-white/5 rounded-full"
             aria-label="Search"
           >
@@ -162,6 +165,14 @@ export function Header() {
 
         {/* Mobile: Panier + Menu */}
         <div className="flex md:hidden items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setSearchOpen(true)}
+            className="p-2 text-foreground bg-white/5 rounded-full"
+            aria-label="Rechercher"
+          >
+            <Search className="h-5 w-5" />
+          </button>
           <button
             type="button"
             onClick={() => setIsOpen(true)}
@@ -262,6 +273,7 @@ export function Header() {
       </div>
 
       <CartSheet />
+      <SearchModal isOpen={searchOpen} setIsOpen={setSearchOpen} />
     </header>
   )
 }

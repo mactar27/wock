@@ -86,3 +86,23 @@ export async function deleteProduct(id: string) {
     return { success: false, error: "Erreur lors de la suppression du produit" };
   }
 }
+
+export async function searchProducts(searchTerm: string) {
+  try {
+    if (!searchTerm || searchTerm.trim() === "") {
+      return [];
+    }
+    const term = `%${searchTerm.toLowerCase()}%`;
+    const products = await query(
+      `SELECT id, name, slug, category, price, image_url 
+       FROM products 
+       WHERE LOWER(name) LIKE ? OR LOWER(description) LIKE ? 
+       LIMIT 10`,
+      [term, term]
+    ) as any[];
+    return products;
+  } catch (error) {
+    console.error("Search products error:", error);
+    return [];
+  }
+}
