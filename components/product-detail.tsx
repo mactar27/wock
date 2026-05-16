@@ -106,36 +106,14 @@ export function ProductDetail({ product }: ProductDetailProps) {
               </Button>
             </div>
 
-            {/* Features */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-10 mt-10 border-t border-white/5">
-              <div className="flex items-start gap-4">
-                <div className="p-3 rounded-2xl bg-primary/10 text-primary">
-                  <Truck className="h-6 w-6" />
-                </div>
-                <div>
-                  <p className="font-bold text-foreground">Livraison Gratuite</p>
-                  <p className="text-sm text-muted-foreground">Partout au Sénégal et ses environs</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="p-3 rounded-2xl bg-accent/10 text-accent">
-                  <Shield className="h-6 w-6" />
-                </div>
-                <div>
-                  <p className="font-bold text-foreground">Garantie Revotex</p>
-                  <p className="text-sm text-muted-foreground">Support technique et SAV premium</p>
-                </div>
-              </div>
-            </div>
-
             {/* Specs */}
             {product.specs && Object.keys(product.specs).length > 0 && (
-              <div className="mt-12 border-t border-white/5 pt-10">
-                <h2 className="text-xl font-bold text-foreground mb-6">Fiche Technique</h2>
+              <div className="mt-10 border-t border-white/5 pt-10">
+                <h2 className="text-xl font-bold text-foreground mb-6 underline decoration-accent decoration-2 underline-offset-8">Fiche Technique</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {Object.entries(product.specs).map(([key, value]) => (
-                    <div key={key} className="flex flex-col p-4 rounded-2xl bg-white/5 border border-white/5">
-                      <dt className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-1">{key.replace(/_/g, " ")}</dt>
+                    <div key={key} className="flex flex-col p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group">
+                      <dt className="text-xs font-black uppercase tracking-widest text-accent mb-1 group-hover:scale-105 transition-transform origin-left">{key.replace(/_/g, " ")}</dt>
                       <dd className="text-base font-bold text-foreground">{String(value)}</dd>
                     </div>
                   ))}
