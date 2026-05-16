@@ -20,7 +20,6 @@ import { User, LogOut, LayoutDashboard } from "lucide-react"
 const navigation = [
   { name: "Smartphones", href: "/smartphones" },
   { name: "Ordinateurs", href: "/laptops" },
-  { name: "Audio", href: "/audio" },
   { name: "Accessoires", href: "/accessories" },
 ]
 

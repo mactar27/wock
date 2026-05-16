@@ -12,7 +12,7 @@ interface PageProps {
 async function getProduct(slug: string): Promise<Product | null> {
   try {
     const products = await query(
-      "SELECT * FROM products WHERE slug = ? AND category = 'accessory' LIMIT 1",
+      "SELECT * FROM products WHERE slug = ? AND category IN ('accessory', 'audio') LIMIT 1",
       [slug]
     ) as Product[];
     

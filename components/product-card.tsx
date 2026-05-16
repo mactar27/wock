@@ -17,7 +17,6 @@ export function ProductCard({ product, variant = "default" }: ProductCardProps) 
   const categoryPath = 
     product.category === "laptop" ? "laptops" : 
     product.category === "smartphone" ? "smartphones" : 
-    product.category === "audio" ? "audio" : 
     "accessories"
   
   const formatPrice = (price: number) => {

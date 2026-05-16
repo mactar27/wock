@@ -7,7 +7,7 @@ import type { Product } from "@/lib/types"
 async function getAccessories(): Promise<Product[]> {
   try {
     const products = await query(
-      "SELECT * FROM products WHERE category = 'accessory' ORDER BY created_at DESC"
+      "SELECT * FROM products WHERE category IN ('accessory', 'audio') ORDER BY created_at DESC"
     ) as Product[];
     
     return products || [];
