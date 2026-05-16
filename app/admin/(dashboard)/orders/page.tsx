@@ -14,6 +14,12 @@ import {
   TableRow 
 } from "@/components/ui/table"
 import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu"
+import { 
   Dialog, 
   DialogContent, 
   DialogDescription, 
