@@ -2,13 +2,14 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Package, LayoutDashboard, Settings, LogOut, Home, ExternalLink } from "lucide-react"
+import { Package, LayoutDashboard, Settings, LogOut, Home, ExternalLink, ShoppingBag } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { logout } from "@/lib/actions/auth"
 import { useRouter } from "next/navigation"
 
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
+  { name: "Commandes", href: "/admin/orders", icon: ShoppingBag },
   { name: "Produits", href: "/admin/products", icon: Package },
   { name: "Paramètres", href: "/admin/settings", icon: Settings },
 ]
