@@ -65,33 +65,35 @@ export function ProductsTable({ products }: ProductsTableProps) {
 
   if (products.length === 0) {
     return (
-      <div className="text-center py-12 bg-background rounded-lg border border-primary/20 bg-primary/5">
-        <p className="text-muted-foreground text-lg">Aucun produit trouvé dans votre catalogue.</p>
-        <Link href="/admin/products/new" className="mt-4 inline-block">
-          <Button className="bg-primary hover:bg-primary/90">Ajouter votre premier produit</Button>
+      <div className="text-center py-24 bg-card/50 border border-primary/10 rounded-3xl">
+        <p className="text-muted-foreground text-lg font-medium">Aucun produit trouvé dans votre catalogue.</p>
+        <Link href="/admin/products/new" className="mt-6 inline-block">
+          <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold rounded-xl px-8">
+            Ajouter votre premier produit
+          </Button>
         </Link>
       </div>
     )
   }
 
   return (
-    <div className="bg-background rounded-lg border border-border overflow-hidden shadow-xl">
+    <div className="bg-background overflow-hidden">
       <Table>
-        <TableHeader className="bg-muted/50">
-          <TableRow>
-            <TableHead className="w-20">Image</TableHead>
-            <TableHead>Produit</TableHead>
-            <TableHead>Catégorie</TableHead>
-            <TableHead>Prix</TableHead>
-            <TableHead>Statut</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
+        <TableHeader className="bg-primary/5">
+          <TableRow className="border-primary/10">
+            <TableHead className="w-20 font-bold text-primary">Image</TableHead>
+            <TableHead className="font-bold text-primary">Produit</TableHead>
+            <TableHead className="font-bold text-primary">Catégorie</TableHead>
+            <TableHead className="font-bold text-primary">Prix</TableHead>
+            <TableHead className="font-bold text-primary">Statut</TableHead>
+            <TableHead className="text-right font-bold text-primary px-6">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {products.map((product) => (
-            <TableRow key={product.id} className="hover:bg-primary/5 transition-colors">
+            <TableRow key={product.id} className="hover:bg-primary/[0.02] transition-colors border-primary/5">
               <TableCell>
-                <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-border bg-secondary">
+                <div className="relative h-14 w-14 overflow-hidden rounded-xl border border-primary/10 bg-muted/30">
                   <Image
                     src={product.image_url || "/placeholder.svg?height=48&width=48"}
                     alt={product.name}
@@ -102,32 +104,40 @@ export function ProductsTable({ products }: ProductsTableProps) {
               </TableCell>
               <TableCell>
                 <div>
-                  <p className="font-bold text-foreground text-base">{product.name}</p>
-                  <p className="text-sm text-muted-foreground truncate max-w-[200px]">
+                  <p className="font-bold text-foreground text-base tracking-tight">{product.name}</p>
+                  <p className="text-xs text-muted-foreground truncate max-w-[200px]">
                     {product.description}
                   </p>
                 </div>
               </TableCell>
               <TableCell>
-                <Badge variant="outline" className="border-primary/20 text-primary">{getCategoryLabel(product.category)}</Badge>
+                <Badge variant="outline" className="border-primary/20 text-primary font-bold bg-primary/5">
+                  {getCategoryLabel(product.category)}
+                </Badge>
               </TableCell>
-              <TableCell className="font-black text-foreground">{formatPrice(product.price)}</TableCell>
+              <TableCell className="font-black text-primary">{formatPrice(product.price)}</TableCell>
               <TableCell>
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1.5">
                   {product.in_stock ? (
-                    <Badge className="bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 border-emerald-500/20 w-fit">En Stock</Badge>
+                    <Badge className="bg-accent/10 text-accent hover:bg-accent/20 border-accent/20 w-fit font-bold">
+                      En Stock
+                    </Badge>
                   ) : (
-                    <Badge variant="destructive" className="w-fit">Rupture</Badge>
+                    <Badge variant="destructive" className="w-fit font-bold">
+                      Rupture
+                    </Badge>
                   )}
                   {product.featured && (
-                    <Badge variant="secondary" className="bg-blue-500/10 text-blue-600 border-blue-500/20 w-fit">En Vedette</Badge>
+                    <Badge className="bg-primary/10 text-primary border-primary/20 w-fit font-bold">
+                      Premium
+                    </Badge>
                   )}
                 </div>
               </TableCell>
-              <TableCell className="text-right">
+              <TableCell className="text-right px-6">
                 <div className="flex items-center justify-end gap-2">
                   <Link href={`/admin/products/${product.id}`}>
-                    <Button variant="ghost" size="icon">
+                    <Button variant="ghost" size="icon" className="hover:bg-primary/10 hover:text-primary rounded-lg transition-all">
                       <Edit className="h-4 w-4" />
                     </Button>
                   </Link>
@@ -136,8 +146,9 @@ export function ProductsTable({ products }: ProductsTableProps) {
                     size="icon"
                     onClick={() => handleDelete(product.id)}
                     disabled={deleting === product.id}
+                    className="hover:bg-destructive/10 hover:text-destructive rounded-lg transition-all"
                   >
-                    <Trash2 className="h-4 w-4 text-destructive" />
+                    <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
               </TableCell>

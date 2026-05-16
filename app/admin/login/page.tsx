@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Apple } from "lucide-react"
 import Link from "next/link"
 
 import { login } from "@/lib/actions/auth"
@@ -47,13 +46,13 @@ export default function AdminLoginPage() {
       <Card className="w-full max-w-md border-primary/10 bg-card/50 backdrop-blur-xl shadow-2xl relative z-10">
         <CardHeader className="text-center space-y-1">
           <div className="flex justify-center mb-6">
-            <div className="h-16 w-16 bg-primary rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 rotate-3">
-              <span className="text-3xl font-black text-primary-foreground -rotate-3">W</span>
+            <div className="h-16 w-16 bg-white rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 rotate-3">
+              <img src="/apple-icon.png" alt="Logo" className="w-10 h-10 object-contain -rotate-3" />
             </div>
           </div>
-          <CardTitle className="text-3xl font-black tracking-tight text-foreground">Wocky Admin</CardTitle>
+          <CardTitle className="text-3xl font-black tracking-tight text-foreground">Revotex Admin</CardTitle>
           <CardDescription className="text-muted-foreground text-base">
-            Connectez-vous pour gérer votre Tech Store.
+            Connectez-vous pour gérer votre Boutique.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -66,7 +65,7 @@ export default function AdminLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                placeholder="admin@wockytech.com"
+                placeholder="admin@revotex.com"
                 className="bg-background/50 border-primary/20 focus:ring-primary h-12"
               />
             </div>

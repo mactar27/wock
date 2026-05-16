@@ -18,7 +18,7 @@ async function getSmartphones(): Promise<Product[]> {
 }
 
 export const metadata = {
-  title: "Smartphones - WockyTech Store",
+  title: "Smartphones - Revotex Store",
   description: "Découvrez les meilleurs smartphones Android et iOS.",
 }
 

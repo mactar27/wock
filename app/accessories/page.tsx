@@ -18,8 +18,8 @@ async function getAccessories(): Promise<Product[]> {
 }
 
 export const metadata = {
-  title: "Accessories - Apple Store",
-  description: "Shop Apple accessories including AirPods, Apple Watch, and more.",
+  title: "Accessoires - Revotex Store",
+  description: "Complétez votre écosystème avec nos accessoires premium.",
 }
 
 export default async function AccessoriesPage() {
@@ -29,29 +29,30 @@ export default async function AccessoriesPage() {
     <div className="min-h-screen bg-background">
       <Header />
       
-      {/* Hero */}
-      <section className="pt-24 pb-16 bg-background">
+      <section className="pt-40 pb-16 bg-background">
         <div className="mx-auto max-w-7xl px-6 text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-foreground">
-            Accessories
+          <div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-bold tracking-wider uppercase">
+            L'Essentiel du Quotidien
+          </div>
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.1]">
+            <span className="text-primary">Accessoires</span> <span className="text-muted-foreground/30">&</span> <span className="text-accent">Plus</span>
           </h1>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto text-pretty">
-            Explore Icons that Icons perfectly with your Apple devices.
+          <p className="mt-6 text-xl text-muted-foreground max-w-2xl mx-auto">
+            Des détails qui font toute la différence pour vos appareils préférés.
           </p>
         </div>
       </section>
 
-      {/* Products Grid */}
       <section className="pb-20 bg-background">
         <div className="mx-auto max-w-7xl px-6">
           {products.length === 0 ? (
-            <div className="text-center py-20">
-              <p className="text-muted-foreground">No accessories available.</p>
+            <div className="text-center py-20 bg-card/50 border border-white/10 rounded-3xl">
+              <p className="text-muted-foreground">Aucun accessoire disponible pour le moment.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={product} variant="featured" />
               ))}
             </div>
           )}

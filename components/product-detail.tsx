@@ -1,8 +1,11 @@
 "use client"
 
-import { useCart } from "@/lib/cart-context"
+import { useState } from "react"
+import Image from "next/image"
+import { ShoppingCart, Check, Truck, Shield, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Check, Truck, Shield, ShoppingBag, Heart } from "lucide-react"
+import { useCart } from "@/lib/cart-context"
+import { useRouter } from "next/navigation"
 import type { Product } from "@/lib/types"
 
 interface ProductDetailProps {
@@ -10,113 +13,116 @@ interface ProductDetailProps {
 }
 
 export function ProductDetail({ product }: ProductDetailProps) {
+  const [isAdding, setIsAdding] = useState(false)
   const { addItem } = useCart()
+  const router = useRouter()
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("fr-SN", {
-      style: "decimal",
+    return new Intl.NumberFormat("fr-FR", {
+      style: "currency",
+      currency: "XOF",
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(price) + " FCFA"
+    }).format(price)
+  }
+
+  const handleAddToCart = () => {
+    setIsAdding(true)
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image_url: product.image_url,
+    })
+    
+    setTimeout(() => {
+      setIsAdding(false)
+    }, 1000)
   }
 
   return (
-    <main className="pt-20 pb-20">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-          {/* Image */}
-          <div className="relative aspect-square rounded-[3rem] bg-secondary/50 overflow-hidden border border-white/5 p-8 flex items-center justify-center">
-            <img
-              src={product.image_url || "/placeholder.svg?height=800&width=800"}
-              alt={product.name}
-              className="max-h-full max-w-full object-contain transition-transform duration-700 hover:scale-110"
-            />
-          </div>
+    <div className="mx-auto max-w-7xl px-6">
+      <button 
+        onClick={() => router.back()}
+        className="mb-8 flex items-center gap-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors group"
+      >
+        <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+        Retour
+      </button>
 
-          {/* Product Info */}
-          <div className="flex flex-col justify-center">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+        {/* Product Image */}
+        <div className="relative aspect-square rounded-[2.5rem] overflow-hidden bg-white/5 border border-white/5 shadow-2xl group">
+          <Image
+            src={product.image_url || "/placeholder.svg?height=600&width=600"}
+            alt={product.name}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-700"
+            priority
+          />
+          {product.featured && (
+            <div className="absolute top-6 left-6 px-4 py-1.5 bg-primary text-primary-foreground text-xs font-black uppercase tracking-widest rounded-full shadow-lg">
+              Premium Selection
+            </div>
+          )}
+        </div>
+
+        {/* Product Info */}
+        <div className="flex flex-col justify-center">
+          <div className="space-y-6">
             <div>
-              <p className="text-sm font-bold uppercase tracking-widest text-primary mb-3">
-                {product.category === "laptop" ? "Ordinateur" : product.category === "smartphone" ? "Smartphone" : "Accessoire"}
+              <p className="text-sm font-black uppercase tracking-[0.2em] text-accent mb-4">
+                {product.category}
               </p>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground text-balance">
+              <h1 className="text-5xl font-black tracking-tight text-foreground leading-tight">
                 {product.name}
               </h1>
-              <p className="mt-6 text-xl text-muted-foreground leading-relaxed text-pretty">
-                {product.description}
-              </p>
             </div>
 
-            {/* Price */}
-            <div className="mt-10 p-6 rounded-3xl bg-primary/5 border border-primary/10">
-              <div className="flex items-baseline gap-4">
-                <span className="text-4xl font-black text-primary">
-                  {formatPrice(product.price)}
-                </span>
-                {product.original_price && (
-                  <span className="text-xl text-muted-foreground line-through opacity-50">
-                    {formatPrice(product.original_price)}
+            <div className="text-4xl font-black text-primary">
+              {formatPrice(product.price)}
+            </div>
+
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              {product.description}
+            </p>
+
+            <div className="pt-6">
+              <Button
+                onClick={handleAddToCart}
+                disabled={!product.in_stock || isAdding}
+                className="w-full h-16 text-lg font-black bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl shadow-2xl shadow-primary/20 transition-all active:scale-[0.98]"
+              >
+                {isAdding ? (
+                  <span className="flex items-center gap-2">
+                    <Check className="h-5 w-5" />
+                    Ajouté au panier
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <ShoppingCart className="h-5 w-5" />
+                    {product.in_stock ? "Ajouter au panier" : "Rupture de stock"}
                   </span>
                 )}
-              </div>
-              {product.original_price && (
-                <div className="mt-2 inline-flex items-center px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 text-sm font-bold">
-                  Économisez {formatPrice(product.original_price - product.price)}
-                </div>
-              )}
-            </div>
-
-            {/* Availability */}
-            <div className="mt-8 flex items-center gap-3">
-              {product.in_stock ? (
-                <div className="flex items-center gap-2 text-emerald-500 bg-emerald-500/5 px-4 py-2 rounded-full border border-emerald-500/10">
-                  <Check className="h-5 w-5" />
-                  <span className="text-sm font-bold">En Stock - Disponible immédiatement</span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-2 text-muted-foreground bg-white/5 px-4 py-2 rounded-full border border-white/10">
-                  <span className="text-sm font-bold">Rupture de stock</span>
-                </div>
-              )}
-            </div>
-
-            {/* Actions */}
-            <div className="mt-10 flex flex-col sm:flex-row gap-4">
-              <Button 
-                size="lg" 
-                onClick={() => addItem(product)}
-                className="flex-1 h-16 rounded-2xl text-lg font-bold bg-primary text-primary-foreground shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all" 
-                disabled={!product.in_stock}
-              >
-                <ShoppingBag className="h-5 w-5 mr-3" />
-                Ajouter au panier
-              </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="h-16 px-8 rounded-2xl border-white/10 hover:bg-white/5"
-              >
-                <Heart className="h-5 w-5" />
               </Button>
             </div>
 
-            {/* Benefits */}
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-white/5 pt-10">
+            {/* Features */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-10 mt-10 border-t border-white/5">
               <div className="flex items-start gap-4">
-                <div className="p-3 rounded-2xl bg-blue-500/10 text-blue-500">
+                <div className="p-3 rounded-2xl bg-primary/10 text-primary">
                   <Truck className="h-6 w-6" />
                 </div>
                 <div>
                   <p className="font-bold text-foreground">Livraison Gratuite</p>
-                  <p className="text-sm text-muted-foreground">Partout à Dakar et ses environs</p>
+                  <p className="text-sm text-muted-foreground">Partout au Sénégal et ses environs</p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="p-3 rounded-2xl bg-amber-500/10 text-amber-500">
+                <div className="p-3 rounded-2xl bg-accent/10 text-accent">
                   <Shield className="h-6 w-6" />
                 </div>
                 <div>
-                  <p className="font-bold text-foreground">Garantie WockyTech</p>
+                  <p className="font-bold text-foreground">Garantie Revotex</p>
                   <p className="text-sm text-muted-foreground">Support technique et SAV premium</p>
                 </div>
               </div>
@@ -139,6 +145,6 @@ export function ProductDetail({ product }: ProductDetailProps) {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   )
 }

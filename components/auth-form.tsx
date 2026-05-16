@@ -61,7 +61,7 @@ export function AuthForm({ mode }: AuthFormProps) {
         <p className="text-muted-foreground">
           {mode === "login" 
             ? "Connectez-vous pour gérer vos commandes et vos favoris." 
-            : "Rejoignez la communauté WockyTech pour une expérience premium."}
+            : "Rejoignez la communauté Revotex pour une expérience premium."}
         </p>
       </div>
 

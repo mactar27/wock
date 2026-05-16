@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Package, LayoutDashboard, Settings, LogOut, Apple } from "lucide-react"
+import { Package, LayoutDashboard, Settings, LogOut, Home, ExternalLink } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { logout } from "@/lib/actions/auth"
 import { useRouter } from "next/navigation"
@@ -30,14 +30,30 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
     <aside className="flex w-72 flex-col border-r border-primary/10 bg-card">
       {/* Logo */}
       <div className="flex h-20 items-center gap-3 border-b border-primary/10 px-6">
-        <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
-          <span className="text-xl font-black text-primary-foreground">W</span>
-        </div>
-        <span className="font-black text-xl tracking-tighter text-foreground">Wocky Admin</span>
+        <Link href="/admin" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+          <div className="h-10 w-10 bg-white rounded-xl flex items-center justify-center shadow-sm border border-primary/5">
+            <img src="/apple-icon.png" alt="Logo" className="w-7 h-7 object-contain" />
+          </div>
+          <span className="font-black text-xl tracking-tighter">
+            <span className="text-primary">Revo</span><span className="text-accent">tex</span> <span className="text-foreground/40 font-bold">Admin</span>
+          </span>
+        </Link>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-2 px-4 py-8">
+      <nav className="flex-1 space-y-1.5 px-4 py-8">
+        {/* Retour au site public */}
+        <Link
+          href="/"
+          className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-accent hover:bg-accent/10 transition-all mb-6 border border-accent/20 bg-accent/5"
+        >
+          <Home className="h-5 w-5" />
+          Accueil Site
+          <ExternalLink className="h-3 w-3 ml-auto opacity-50" />
+        </Link>
+
+        <div className="h-px bg-primary/5 mx-4 mb-6" />
+
         {navigation.map((item) => {
           const isActive = pathname === item.href || 
             (item.href !== "/admin" && pathname.startsWith(item.href))

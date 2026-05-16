@@ -17,7 +17,7 @@ export default async function AdminDashboardLayout({
   }
 
   // Simulation d'un utilisateur admin pour le sidebar
-  const user = { email: "admin@wockytech.com" }
+  const user = { email: "admin@revotex.com" }
 
   return (
     <div className="flex min-h-screen bg-secondary/30">

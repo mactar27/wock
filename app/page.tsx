@@ -31,7 +31,7 @@ export default async function HomePage() {
     <div className="min-h-screen bg-background text-foreground">
       <Header />
       
-      {/* Hero Section - Featuring a top-tier Android phone for a change */}
+      {/* Hero Section */}
       <HeroSection
         subtitle="Innovation 2026"
         title="Galaxy S24 Ultra"
@@ -48,10 +48,10 @@ export default async function HomePage() {
           <div className="mb-24">
             <div className="flex items-end justify-between mb-12">
               <div>
-                <h2 className="text-4xl font-bold mb-4">Smartphones</h2>
-                <p className="text-muted-foreground">Le meilleur de l'innovation mobile, d'Android à iOS.</p>
+                <h2 className="text-4xl font-black mb-4 text-primary">Smartphones</h2>
+                <p className="text-muted-foreground font-medium">Le meilleur de l'innovation mobile, d'Android à iOS.</p>
               </div>
-              <Link href="/smartphones" className="text-primary font-bold hover:underline flex items-center gap-2">
+              <Link href="/smartphones" className="text-accent font-black hover:underline flex items-center gap-2 transition-all hover:gap-3">
                 Tout voir <ChevronRight className="h-5 w-5" />
               </Link>
             </div>
@@ -68,10 +68,10 @@ export default async function HomePage() {
           <div className="mb-24">
             <div className="flex items-end justify-between mb-12">
               <div>
-                <h2 className="text-4xl font-bold mb-4">Ordinateurs</h2>
-                <p className="text-muted-foreground">Des performances extrêmes pour les pros et les créatifs.</p>
+                <h2 className="text-4xl font-black mb-4 text-primary">Ordinateurs</h2>
+                <p className="text-muted-foreground font-medium">Des performances extrêmes pour les pros et les créatifs.</p>
               </div>
-              <Link href="/laptops" className="text-primary font-bold hover:underline flex items-center gap-2">
+              <Link href="/laptops" className="text-accent font-black hover:underline flex items-center gap-2 transition-all hover:gap-3">
                 Tout voir <ChevronRight className="h-5 w-5" />
               </Link>
             </div>
@@ -88,10 +88,10 @@ export default async function HomePage() {
           <div>
             <div className="flex items-end justify-between mb-12">
               <div>
-                <h2 className="text-4xl font-bold mb-4">Audio & Musique</h2>
-                <p className="text-muted-foreground">Une qualité sonore sans compromis.</p>
+                <h2 className="text-4xl font-black mb-4 text-primary">Audio & Musique</h2>
+                <p className="text-muted-foreground font-medium">Une qualité sonore sans compromis.</p>
               </div>
-              <Link href="/audio" className="text-primary font-bold hover:underline flex items-center gap-2">
+              <Link href="/audio" className="text-accent font-black hover:underline flex items-center gap-2 transition-all hover:gap-3">
                 Tout voir <ChevronRight className="h-5 w-5" />
               </Link>
             </div>

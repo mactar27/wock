@@ -40,17 +40,20 @@ export default async function AdminDashboardPage() {
   return (
     <div className="space-y-10">
       <div className="flex flex-col gap-2">
-        <h1 className="text-4xl font-extrabold tracking-tight text-foreground">Dashboard</h1>
-        <p className="text-muted-foreground">Bienvenue dans votre centre de commande WockyTech.</p>
+        <h1 className="text-4xl font-black tracking-tight text-primary">Dashboard</h1>
+        <p className="text-muted-foreground font-medium">Bienvenue dans votre centre de commande Revotex.</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="border-primary/10 bg-primary/5">
+        {/* Total Produits - Navy */}
+        <Card className="border-primary/10 bg-primary/5 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-bold uppercase tracking-wider text-primary">
+            <CardTitle className="text-xs font-black uppercase tracking-widest text-primary">
               Total Produits
             </CardTitle>
-            <Package className="h-5 w-5 text-primary" />
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <Package className="h-4 w-4 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-black text-foreground">{stats.totalProducts}</div>
@@ -58,12 +61,15 @@ export default async function AdminDashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-emerald-500/10 bg-emerald-500/5">
+        {/* En Stock - Cyan */}
+        <Card className="border-accent/20 bg-accent/5 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-bold uppercase tracking-wider text-emerald-500">
+            <CardTitle className="text-xs font-black uppercase tracking-widest text-accent">
               En Stock
             </CardTitle>
-            <Box className="h-5 w-5 text-emerald-500" />
+            <div className="p-2 bg-accent/10 rounded-lg">
+              <Box className="h-4 w-4 text-accent" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-black text-foreground">{stats.inStockProducts}</div>
@@ -71,12 +77,15 @@ export default async function AdminDashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-blue-500/10 bg-blue-500/5">
+        {/* Mis en avant - Navy */}
+        <Card className="border-primary/10 bg-primary/5 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-bold uppercase tracking-wider text-blue-500">
+            <CardTitle className="text-xs font-black uppercase tracking-widest text-primary">
               Mis en avant
             </CardTitle>
-            <TrendingUp className="h-5 w-5 text-blue-500" />
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <TrendingUp className="h-4 w-4 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-black text-foreground">{stats.featuredProducts}</div>
@@ -84,12 +93,15 @@ export default async function AdminDashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-amber-500/10 bg-amber-500/5">
+        {/* Valeur Stock - Cyan */}
+        <Card className="border-accent/20 bg-accent/5 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-bold uppercase tracking-wider text-amber-500">
+            <CardTitle className="text-xs font-black uppercase tracking-widest text-accent">
               Valeur Stock
             </CardTitle>
-            <DollarSign className="h-5 w-5 text-amber-500" />
+            <div className="p-2 bg-accent/10 rounded-lg">
+              <DollarSign className="h-4 w-4 text-accent" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-black text-foreground">{formatCurrency(stats.totalValue)}</div>

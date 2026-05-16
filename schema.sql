@@ -46,6 +46,6 @@ CREATE TABLE IF NOT EXISTS orders (
   FOREIGN KEY (user_id) REFERENCES User(id) ON DELETE SET NULL
 );
 
--- Insertion d'un compte admin de test (Email: admin@wockytech.com / MP: admin123)
+-- Insertion d'un compte admin de test (Email: admin@revotex.com / MP: admin123)
 -- NOTE: En production, utilisez des mots de passe hachés !
-INSERT IGNORE INTO admin_users (email, password) VALUES ('admin@wockytech.com', 'admin123');
+INSERT IGNORE INTO admin_users (email, password) VALUES ('admin@revotex.com', 'admin123');

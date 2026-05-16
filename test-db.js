@@ -5,7 +5,7 @@ async function testConnection() {
     host: 'localhost',
     user: 'root',
     password: 'M@tzo2705',
-    database: 'wockytech_db'
+    database: 'revotex_db'
   };
 
   console.log('Tentative de connexion à MySQL...');
@@ -20,7 +20,7 @@ async function testConnection() {
   } catch (error) {
     console.error('❌ Erreur de connexion :', error.message);
     if (error.code === 'ER_BAD_DB_ERROR') {
-      console.log('👉 La base de données "wockytech_db" n\'existe pas. Créez-la dans PHPMyAdmin.');
+      console.log('👉 La base de données "revotex_db" n\'existe pas. Créez-la dans PHPMyAdmin.');
     } else if (error.code === 'ER_ACCESS_DENIED_ERROR') {
       console.log('👉 Le mot de passe ou l\'utilisateur est incorrect.');
     } else if (error.code === 'ECONNREFUSED') {

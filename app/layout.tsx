@@ -17,13 +17,13 @@ const _geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "WockyTech - Apple & Tech Store Premium",
-  description: "Découvrez le meilleur de la technologie Apple et accessoires premium à Dakar.",
+  title: "Revotex - Apple & Tech Store Premium",
+  description: "Découvrez le meilleur de la technologie Apple et accessoires premium à Dakar chez Revotex.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "WockyTech",
+    title: "Revotex",
   },
   formatDetection: {
     telephone: false,

@@ -32,8 +32,15 @@ export function Header() {
   return (
     <header className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl">
       <nav className="flex items-center justify-between px-8 py-4 bg-card/60 backdrop-blur-xl border border-white/10 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
-        {/* Espace vide à la place du logo pour l'équilibre */}
-        <div className="flex-1 md:flex-none" />
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2 group">
+          <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center border border-white/10 group-hover:scale-110 transition-transform">
+            <img src="/apple-icon.png" alt="Logo" className="w-7 h-7 object-contain" />
+          </div>
+          <span className="hidden sm:block text-lg font-black tracking-tight">
+            <span className="text-primary">Revo</span><span className="text-accent">tex</span>
+          </span>
+        </Link>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex md:items-center md:gap-x-10">
@@ -41,7 +48,7 @@ export function Header() {
             <Link
               key={item.name}
               href={item.href}
-              className="text-sm font-medium text-foreground/70 transition-all hover:text-primary hover:scale-105"
+              className="text-sm font-bold text-primary/80 transition-all hover:text-accent hover:scale-105"
             >
               {item.name}
             </Link>
@@ -158,7 +165,7 @@ export function Header() {
             <Link
               key={item.name}
               href={item.href}
-              className="text-xl font-semibold text-foreground hover:text-primary"
+              className="text-xl font-bold text-primary hover:text-accent"
               onClick={() => setMobileMenuOpen(false)}
             >
               {item.name}

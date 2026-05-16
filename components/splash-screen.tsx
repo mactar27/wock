@@ -1,22 +1,33 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Image from "next/image"
 
 export function SplashScreen() {
   const [mounted, setMounted] = useState(false)
-  const [visible, setVisible] = useState(true)
+  const [visible, setVisible] = useState(false)
   const [fadeOut, setFadeOut] = useState(false)
 
   useEffect(() => {
     setMounted(true)
-    // Démarrer le fondu après 1.2 secondes
-    const fadeTimer = setTimeout(() => setFadeOut(true), 1200)
-    // Cacher complètement après 1.6 secondes
-    const hideTimer = setTimeout(() => setVisible(false), 1600)
+    
+    // Vérifier si le splash a déjà été affiché dans cette session
+    const hasSeenSplash = sessionStorage.getItem('hasSeenSplash')
+    
+    if (!hasSeenSplash) {
+      setVisible(true)
+      // Démarrer le fondu après 1.2 secondes
+      const fadeTimer = setTimeout(() => setFadeOut(true), 1200)
+      // Cacher complètement après 1.6 secondes
+      const hideTimer = setTimeout(() => {
+        setVisible(false)
+        sessionStorage.setItem('hasSeenSplash', 'true')
+      }, 1600)
 
-    return () => {
-      clearTimeout(fadeTimer)
-      clearTimeout(hideTimer)
+      return () => {
+        clearTimeout(fadeTimer)
+        clearTimeout(hideTimer)
+      }
     }
   }, [])
 
@@ -24,13 +35,16 @@ export function SplashScreen() {
 
   const handleDismiss = () => {
     setFadeOut(true)
-    setTimeout(() => setVisible(false), 400)
+    setTimeout(() => {
+      setVisible(false)
+      sessionStorage.setItem('hasSeenSplash', 'true')
+    }, 400)
   }
 
   return (
     <div
       onClick={handleDismiss}
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black cursor-pointer"
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white cursor-pointer"
       style={{
         transition: "opacity 0.6s ease-out",
         opacity: fadeOut ? 0 : 1,
@@ -43,31 +57,33 @@ export function SplashScreen() {
         }}
         className="flex flex-col items-center gap-6"
       >
-        {/* Icône W */}
-        <div className="w-24 h-24 bg-white rounded-3xl flex items-center justify-center shadow-2xl">
-          <span
-            className="text-black font-black text-5xl"
-            style={{ fontFamily: "system-ui, -apple-system, sans-serif", letterSpacing: "-2px" }}
-          >
-            W
-          </span>
+        {/* Logo Apple Icon */}
+        <div className="w-24 h-24 flex items-center justify-center">
+          <Image 
+            src="/apple-icon.png" 
+            alt="Logo" 
+            width={96} 
+            height={96} 
+            className="object-contain"
+            priority
+          />
         </div>
 
         {/* Nom de la marque */}
         <div className="text-center">
-          <p className="text-white text-3xl font-bold tracking-tight">
-            Wocky<span className="text-white/60">Tech</span>
+          <p className="text-3xl font-black tracking-tight">
+            <span className="text-primary">Revo</span><span className="text-accent">tex</span>
           </p>
-          <p className="text-white/40 text-sm mt-1 tracking-widest uppercase">
+          <p className="text-black/30 text-sm mt-1 tracking-widest uppercase">
             Premium Store
           </p>
         </div>
       </div>
 
       {/* Barre de chargement */}
-      <div className="absolute bottom-16 w-32 h-0.5 bg-white/10 rounded-full overflow-hidden">
+      <div className="absolute bottom-16 w-32 h-0.5 bg-black/5 rounded-full overflow-hidden">
         <div
-          className="h-full bg-white rounded-full"
+          className="h-full bg-primary rounded-full"
           style={{
             animation: "splashProgress 1.2s ease-out forwards",
           }}

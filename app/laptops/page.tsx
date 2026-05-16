@@ -18,7 +18,7 @@ async function getLaptops(): Promise<Product[]> {
 }
 
 export const metadata = {
-  title: "Ordinateurs - WockyTech Store",
+  title: "Ordinateurs - Revotex Store",
   description: "Découvrez notre sélection de laptops Windows et Mac.",
 }
 

@@ -18,7 +18,7 @@ async function getAudioProducts(): Promise<Product[]> {
 }
 
 export const metadata = {
-  title: "Audio & Son - WockyTech Store",
+  title: "Audio & Son - Revotex Store",
   description: "Casques, écouteurs et enceintes des plus grandes marques.",
 }
 

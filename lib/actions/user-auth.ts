@@ -75,7 +75,7 @@ export async function userLogin(data: any) {
         path: "/",
       });
 
-      return { success: true, user: { id: admin.id, name: "Admin WockyTech", email: admin.email, role: 'admin' } };
+      return { success: true, user: { id: admin.id, name: "Admin Revotex", email: admin.email, role: 'admin' } };
     }
 
     return { success: false, error: "Email ou mot de passe incorrect" };
@@ -99,7 +99,7 @@ export async function getCurrentUser() {
       const adminId = sessionId.replace("admin_", "");
       const admins = await query("SELECT id, email FROM admin_users WHERE id = ?", [adminId]) as any[];
       if (admins.length > 0) {
-        return { ...admins[0], name: "Admin WockyTech", role: 'admin' };
+        return { ...admins[0], name: "Admin Revotex", role: 'admin' };
       }
     } else {
       const users = await query("SELECT id, name, email FROM User WHERE id = ?", [sessionId]) as any[];
