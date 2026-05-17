@@ -8,13 +8,9 @@ import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 
 function getCategoryPath(category: string) {
-  switch (category) {
-    case 'smartphone': return '/smartphones';
-    case 'laptop': return '/laptops';
-    case 'audio': return '/audio';
-    case 'accessory': return '/accessories';
-    default: return '/smartphones';
-  }
+  // Use the unified dynamic route structure
+  if (!category) return '/categorie/telephone';
+  return `/categorie/${category}`;
 }
 
 async function getFeaturedProducts(): Promise<Product[]> {
@@ -39,13 +35,13 @@ export default async function HomePage() {
     slug: "",
     description: "Découvrez notre sélection exclusive des meilleurs produits Apple et Tech au Sénégal.",
     price: 0,
-    category: "smartphone",
+    category: "telephone",
     image_url: "/samsung s24.jpeg"
   }
   
-  const smartphones = featuredProducts.filter((p) => p.category === "smartphone")
-  const laptops = featuredProducts.filter((p) => p.category === "laptop")
-  const audio = featuredProducts.filter((p) => p.category === "audio")
+  const smartphones = featuredProducts.filter((p) => p.category === "telephone" || p.category === "smartphone")
+  const laptops = featuredProducts.filter((p) => p.category === "ordinateur" || p.category === "laptop")
+  const accessories = featuredProducts.filter((p) => p.category.includes("accessoire") || p.category === "accessory" || p.category === "audio")
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -74,7 +70,7 @@ export default async function HomePage() {
                 <h2 className="text-4xl font-black mb-4 text-primary">Smartphones</h2>
                 <p className="text-muted-foreground font-medium">Le meilleur de l'innovation mobile, d'Android à iOS.</p>
               </div>
-              <Link href="/smartphones" className="text-accent font-black hover:underline flex items-center gap-2 transition-all hover:gap-3">
+              <Link href="/categorie/telephone" className="text-accent font-black hover:underline flex items-center gap-2 transition-all hover:gap-3">
                 Tout voir <ChevronRight className="h-5 w-5" />
               </Link>
             </div>
@@ -94,7 +90,7 @@ export default async function HomePage() {
                 <h2 className="text-4xl font-black mb-4 text-primary">Ordinateurs</h2>
                 <p className="text-muted-foreground font-medium">Des performances extrêmes pour les pros et les créatifs.</p>
               </div>
-              <Link href="/laptops" className="text-accent font-black hover:underline flex items-center gap-2 transition-all hover:gap-3">
+              <Link href="/categorie/ordinateur" className="text-accent font-black hover:underline flex items-center gap-2 transition-all hover:gap-3">
                 Tout voir <ChevronRight className="h-5 w-5" />
               </Link>
             </div>
@@ -106,20 +102,20 @@ export default async function HomePage() {
           </div>
         )}
 
-        {/* Audio Section */}
-        {audio.length > 0 && (
+        {/* Accessories Section */}
+        {accessories.length > 0 && (
           <div>
             <div className="flex items-end justify-between mb-12">
               <div>
-                <h2 className="text-4xl font-black mb-4 text-primary">Audio & Musique</h2>
-                <p className="text-muted-foreground font-medium">Une qualité sonore sans compromis.</p>
+                <h2 className="text-4xl font-black mb-4 text-primary">Accessoires</h2>
+                <p className="text-muted-foreground font-medium">L'équipement parfait pour accompagner vos appareils.</p>
               </div>
-              <Link href="/audio" className="text-accent font-black hover:underline flex items-center gap-2 transition-all hover:gap-3">
+              <Link href="/categorie/accessoire-telephone" className="text-accent font-black hover:underline flex items-center gap-2 transition-all hover:gap-3">
                 Tout voir <ChevronRight className="h-5 w-5" />
               </Link>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {audio.map((product) => (
+              {accessories.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
