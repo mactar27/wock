@@ -41,19 +41,55 @@ export function ProductForm({ product }: ProductFormProps) {
     setError(null)
 
     try {
-      const formData = new FormData()
-      formData.append("file", file, file.name)
+      // Lecture et compression de l'image côté client pour éviter les limites de taille de Vercel
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      
+      reader.onload = (event) => {
+        const img = new Image()
+        img.src = event.target?.result as string
+        
+        img.onload = () => {
+          const canvas = document.createElement("canvas")
+          let width = img.width
+          let height = img.height
 
-      const result = await uploadImage(formData)
-      if (result.success && result.url) {
-        setFormData((prev) => ({ ...prev, image_url: result.url as string }))
-      } else {
-        throw new Error(result.error)
+          // Redimensionner si l'image est trop grande (max 1200px de large/haut)
+          const MAX_SIZE = 1200
+          if (width > height && width > MAX_SIZE) {
+            height *= MAX_SIZE / width
+            width = MAX_SIZE
+          } else if (height > MAX_SIZE) {
+            width *= MAX_SIZE / height
+            height = MAX_SIZE
+          }
+
+          canvas.width = width
+          canvas.height = height
+          
+          const ctx = canvas.getContext("2d")
+          ctx?.drawImage(img, 0, 0, width, height)
+          
+          // Compression en WEBP avec qualité 80% (très léger)
+          const compressedBase64 = canvas.toDataURL("image/webp", 0.8)
+          
+          setFormData((prev) => ({ ...prev, image_url: compressedBase64 }))
+          setUploading(false)
+        }
+        
+        img.onerror = () => {
+          setError("Erreur lors de la lecture de l'image")
+          setUploading(false)
+        }
+      }
+      
+      reader.onerror = () => {
+        setError("Erreur lors de la lecture du fichier")
+        setUploading(false)
       }
     } catch (err) {
       console.error(err)
-      setError("Erreur lors de l'envoi de l'image")
-    } finally {
+      setError("Erreur inattendue")
       setUploading(false)
     }
   }
