@@ -18,10 +18,6 @@ const footerLinks = {
     { name: "Mon Compte", href: "/login" },
     { name: "Suivi de Commande", href: "/login" },
   ],
-  "Revotex": [
-    { name: "Notre Boutique", href: "/" },
-    { name: "Acheter en Ligne", href: "/" },
-  ],
 }
 
 export function Footer() {
