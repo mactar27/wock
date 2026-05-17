@@ -13,16 +13,13 @@ const footerLinks = {
     { name: "Compte X", href: "https://x.com/NdiayeEl1208" },
     { name: "Facebook", href: "https://www.facebook.com/share/1B88cKBdm5/" },
   ],
-  "Support": [
-    { name: "WhatsApp", href: "https://wa.me/221785872408" },
-  ],
 }
 
 export function Footer() {
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="mx-auto max-w-7xl px-6 py-16">
-        <div className="grid grid-cols-2 gap-12 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-12 md:grid-cols-3">
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-3 group">
               <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
