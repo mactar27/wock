@@ -111,7 +111,7 @@ export function ProductForm({ product }: ProductFormProps) {
     name: product?.name || "",
     slug: product?.slug || "",
     description: product?.description || "",
-    category: product?.category || "smartphone",
+    category: product?.category === "smartphone" ? "telephone" : (product?.category || "telephone"),
     price: product?.price?.toString() || "",
     original_price: product?.original_price?.toString() || "",
     image_url: product?.image_url || "",

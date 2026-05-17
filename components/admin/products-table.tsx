@@ -49,18 +49,22 @@ export function ProductsTable({ products }: ProductsTableProps) {
   }
 
   const getCategoryLabel = (category: string) => {
-    switch (category) {
-      case "smartphone":
-        return "Smartphone"
-      case "laptop":
-        return "Ordinateur"
-      case "audio":
-        return "Audio"
-      case "accessory":
-        return "Accessoire"
-      default:
-        return category
-    }
+    const labels: Record<string, string> = {
+      telephone: "Téléphone",
+      ordinateur: "Ordinateur",
+      tablette: "Tablette",
+      drone: "Drone",
+      camera: "Appareil Photo",
+      "accessoire-telephone": "Acc. Téléphone",
+      "accessoire-tablette": "Acc. Tablette",
+      "accessoire-ordinateur": "Acc. Ordinateur",
+      // Fallback pour anciens produits
+      smartphone: "Smartphone",
+      laptop: "Ordinateur Portable",
+      audio: "Audio",
+      accessory: "Accessoire"
+    };
+    return labels[category] || category;
   }
 
   if (products.length === 0) {
