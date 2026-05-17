@@ -15,7 +15,6 @@ const footerLinks = {
   ],
   "Support": [
     { name: "WhatsApp", href: "https://wa.me/221785872408" },
-    { name: "Mon Compte", href: "/login" },
   ],
 }
 
