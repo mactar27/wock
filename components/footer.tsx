@@ -3,9 +3,9 @@ import { MapPin, Phone } from "lucide-react"
 
 const footerLinks = {
   "Boutique": [
-    { name: "Laptops", href: "/laptops" },
-    { name: "Smartphones", href: "/smartphones" },
-    { name: "Accessoires", href: "/accessories" },
+    { name: "Téléphones", href: "/categorie/telephone" },
+    { name: "Ordinateurs", href: "/categorie/ordinateur" },
+    { name: "Accessoires", href: "/categorie/accessoire-telephone" },
   ],
   "Réseaux Sociaux": [
     { name: "Instagram", href: "https://www.instagram.com/revotextech?utm_source=qr&igsh=MTlvemx1d3IxbmowdA==" },
@@ -15,11 +15,11 @@ const footerLinks = {
   ],
   "Support": [
     { name: "WhatsApp", href: "https://wa.me/221785872408" },
-    { name: "Mon Compte", href: "#" },
-    { name: "Suivi de Commande", href: "#" },
+    { name: "Mon Compte", href: "/login" },
+    { name: "Suivi de Commande", href: "/login" },
   ],
   "Revotex": [
-    { name: "Notre Boutique", href: "#" },
+    { name: "Notre Boutique", href: "/" },
     { name: "Acheter en Ligne", href: "/" },
   ],
 }
