@@ -10,8 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { cn } from "@/lib/utils"
-import { Upload, X, ImageIcon, Plus, Trash2, Sparkles } from "lucide-react"
-import { removeBackground, preload } from "@imgly/background-removal"
+import { Upload, X, ImageIcon, Plus, Trash2 } from "lucide-react"
 import {
   Select,
   SelectContent,
@@ -30,13 +29,8 @@ export function ProductForm({ product }: ProductFormProps) {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
   
-  useEffect(() => {
-    // Précharger les modèles IA dès l'ouverture de la page
-    preload().catch(err => console.warn("AI Preload failed:", err))
-  }, [])
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
-  const [isRemovingBg, setIsRemovingBg] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,27 +41,8 @@ export function ProductForm({ product }: ProductFormProps) {
     setError(null)
 
     try {
-      let finalBlob: Blob = file
-
-      // Étape 1: Tentative de détourage IA
-      try {
-        setIsRemovingBg(true)
-        // Timeout de 10 secondes pour l'IA
-        const bgRemovalPromise = removeBackground(file)
-        const timeoutPromise = new Promise((_, reject) => 
-          setTimeout(() => reject(new Error("Timeout IA")), 10000)
-        )
-        finalBlob = await Promise.race([bgRemovalPromise, timeoutPromise]) as Blob
-      } catch (aiError) {
-        console.warn("IA Background removal failed or timed out, using original image:", aiError)
-        finalBlob = file
-      } finally {
-        setIsRemovingBg(false)
-      }
-      
-      // Étape 2: Upload
       const formData = new FormData()
-      formData.append("file", finalBlob, file.name)
+      formData.append("file", file, file.name)
 
       const result = await uploadImage(formData)
       if (result.success && result.url) {
@@ -80,7 +55,6 @@ export function ProductForm({ product }: ProductFormProps) {
       setError("Erreur lors de l'envoi de l'image")
     } finally {
       setUploading(false)
-      setIsRemovingBg(false)
     }
   }
 
@@ -299,10 +273,10 @@ export function ProductForm({ product }: ProductFormProps) {
           <CardContent className="space-y-4">
             <div className="space-y-4">
               <div 
-                onClick={() => !uploading && !isRemovingBg && fileInputRef.current?.click()}
+                onClick={() => !uploading && fileInputRef.current?.click()}
                 className={cn(
                   "relative group aspect-video rounded-xl border-2 border-dashed border-primary/20 bg-primary/5 flex items-center justify-center overflow-hidden transition-all cursor-pointer",
-                  (uploading || isRemovingBg) && "opacity-50 cursor-not-allowed",
+                  uploading && "opacity-50 cursor-not-allowed",
                   !formData.image_url && "hover:border-primary/40 hover:bg-primary/10"
                 )}
               >
@@ -333,19 +307,10 @@ export function ProductForm({ product }: ProductFormProps) {
                   </>
                 ) : (
                   <div className="text-center p-6">
-                    {isRemovingBg ? (
-                      <Sparkles className="h-12 w-12 text-primary animate-pulse mx-auto mb-3" />
-                    ) : (
-                      <Upload className="h-12 w-12 text-primary/40 mx-auto mb-3" />
-                    )}
+                    <Upload className="h-12 w-12 text-primary/40 mx-auto mb-3" />
                     <p className="text-base text-muted-foreground font-bold">
-                      {isRemovingBg ? "Détourage Magique en cours..." : uploading ? "Téléchargement..." : "Cliquez ici pour choisir une photo"}
+                      {uploading ? "Téléchargement..." : "Cliquez ici pour choisir une photo"}
                     </p>
-                    {!uploading && !isRemovingBg && (
-                      <p className="text-xs text-muted-foreground/60 mt-2">
-                        Le fond sera automatiquement supprimé ✨
-                      </p>
-                    )}
                   </div>
                 )}
                 <input
