@@ -5,7 +5,14 @@ const footerLinks = {
   "Boutique": [
     { name: "Téléphones", href: "/categorie/telephone" },
     { name: "Ordinateurs", href: "/categorie/ordinateur" },
-    { name: "Accessoires", href: "/categorie/accessoire-telephone" },
+    { name: "Tablettes", href: "/categorie/tablette" },
+    { name: "Drones", href: "/categorie/drone" },
+    { name: "Appareils Photo", href: "/categorie/camera" },
+  ],
+  "Accessoires": [
+    { name: "Accessoires Téléphone", href: "/categorie/accessoire-telephone" },
+    { name: "Accessoires Tablette", href: "/categorie/accessoire-tablette" },
+    { name: "Accessoires Ordinateur", href: "/categorie/accessoire-ordinateur" },
   ],
   "Réseaux Sociaux": [
     { name: "Instagram", href: "https://www.instagram.com/revotextech?utm_source=qr&igsh=MTlvemx1d3IxbmowdA==" },
@@ -19,7 +26,7 @@ export function Footer() {
   return (
     <footer className="bg-primary text-primary-foreground">
       <div className="mx-auto max-w-7xl px-6 py-16">
-        <div className="grid grid-cols-2 gap-12 md:grid-cols-3">
+        <div className="grid grid-cols-2 gap-12 md:grid-cols-4">
           <div className="col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center gap-3 group">
               <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
