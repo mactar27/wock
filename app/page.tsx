@@ -7,6 +7,16 @@ import type { Product } from "@/lib/types"
 import Link from "next/link"
 import { ChevronRight } from "lucide-react"
 
+function getCategoryPath(category: string) {
+  switch (category) {
+    case 'smartphone': return '/smartphones';
+    case 'laptop': return '/laptops';
+    case 'audio': return '/audio';
+    case 'accessory': return '/accessories';
+    default: return '/smartphones';
+  }
+}
+
 async function getFeaturedProducts(): Promise<Product[]> {
   try {
     const products = await query(
@@ -49,9 +59,9 @@ export default async function HomePage() {
         image={heroProduct.image_url || "/samsung s24.jpeg"}
         primaryLink={{ 
           text: "Acheter maintenant", 
-          href: heroProduct.slug ? `/${heroProduct.category}s/${heroProduct.slug}` : "/smartphones" 
+          href: heroProduct.slug ? `${getCategoryPath(heroProduct.category)}/${heroProduct.slug}` : "/smartphones" 
         }}
-        secondaryLink={{ text: "En savoir plus", href: `/${heroProduct.category}s` }}
+        secondaryLink={{ text: "En savoir plus", href: getCategoryPath(heroProduct.category) }}
       />
 
       {/* Categories Sections */}
